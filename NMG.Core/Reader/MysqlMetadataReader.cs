@@ -30,7 +30,7 @@ namespace NMG.Core.Reader
                 {
                     using (MySqlCommand tableDetailsCommand = conn.CreateCommand())
                     {
-                        tableDetailsCommand.CommandText = string.Format(@"DESCRIBE {0}.{1}", owner, table);
+                        tableDetailsCommand.CommandText = $"DESCRIBE `{owner}`.`{table}`";
                         using (MySqlDataReader sqlDataReader = tableDetailsCommand.ExecuteReader(CommandBehavior.Default))
                         {
                             while (sqlDataReader.Read())
