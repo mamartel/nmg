@@ -86,9 +86,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="MySql.Data">
-      <HintPath>..\Lib\MySql\MySql.Data.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\ColumnDetail.cs" />
@@ -170,6 +167,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <PackageReference Include="MySqlConnector">
+      <Version>0.64.2</Version>
+    </PackageReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
