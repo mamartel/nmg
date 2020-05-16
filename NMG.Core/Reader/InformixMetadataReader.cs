@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using IBM.Data.DB2;
 using System.Linq;
+using System.Threading.Tasks;
+
 using NMG.Core.Domain;
 
 
@@ -20,9 +22,9 @@ namespace NMG.Core.Reader
         }
 
 
-        public IList<string> GetOwners()
+        public Task<IList<string>> GetOwners()
         {
-            var owners = new List<string>();
+            IList<string> owners = new List<string>();
             using (var sqlCon = new DB2Connection(_connectionStr))
             {
                 sqlCon.Open();
@@ -46,7 +48,7 @@ namespace NMG.Core.Reader
                     sqlCon.Close();
                 }
             }
-            return owners;
+            return Task.FromResult(owners);
         }
 
 

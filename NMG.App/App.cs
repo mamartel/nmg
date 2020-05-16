@@ -452,7 +452,7 @@ namespace NHibernateMappingGenerator
             }
         }
 
-        private void connectBtnClicked(object sender, EventArgs e)
+        private async void connectBtnClicked(object sender, EventArgs e)
         {
             if (_currentConnection == null)
                 return;
@@ -470,7 +470,7 @@ namespace NHibernateMappingGenerator
 
                 toolStripStatusLabel.Text = "Retrieving owners...";
                 statusStrip1.Refresh();
-                PopulateOwners();
+                await PopulateOwners();
 
                 toolStripStatusLabel.Text = string.Empty;
             }
@@ -484,9 +484,9 @@ namespace NHibernateMappingGenerator
             }
         }
 
-        private void PopulateOwners()
+        private async Task PopulateOwners()
         {
-            var owners = metadataReader.GetOwners();
+            var owners = await metadataReader.GetOwners();
             if (owners == null || owners.Count == 0)
             {
                 owners = new List<string> { "dbo" };

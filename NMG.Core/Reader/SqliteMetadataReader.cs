@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
+using System.Threading.Tasks;
+
 using NMG.Core.Domain;
 
 namespace NMG.Core.Reader
@@ -96,9 +98,9 @@ namespace NMG.Core.Reader
             return tables;
         }
 
-        public IList<string> GetOwners()
+        public Task<IList<string>> GetOwners()
         {
-            return new List<string>{"master"};
+            return Task.FromResult((IList<string>)new List<string>{"master"});
         }
 
         public List<string> GetSequences(string owner)

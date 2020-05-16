@@ -4,6 +4,7 @@ using System.Linq;
 using NMG.Core.Domain;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace NMG.Core.Reader
 {
@@ -89,36 +90,28 @@ namespace NMG.Core.Reader
             {
                 conn.Close();
             }
-            
+
             return columns;
         }
 
-        public IList<string> GetOwners()
+        public async Task<IList<string>> GetOwners()
         {
             var owners = new List<string>();
-            var conn = new MySqlConnection(connectionStr);
-            
-            conn.Open();
-            try
+            using (var conn = new MySqlConnection(connectionStr))
             {
-                using (conn)
-                {
-                    var tableCommand = conn.CreateCommand();
-                    tableCommand.CommandText = @"select distinct table_schema from information_schema.tables
+                await conn.OpenAsync().ConfigureAwait(false);
+
+                var tableCommand = conn.CreateCommand();
+                tableCommand.CommandText = @"select distinct table_schema from information_schema.tables
                                                 union
                                                 select schema_name from information_schema.schemata
                                                 ";
-                    var sqlDataReader = tableCommand.ExecuteReader(CommandBehavior.CloseConnection);
-                    while (sqlDataReader.Read())
-                    {
-                        var ownerName = sqlDataReader.GetString(0);
-                        owners.Add(ownerName);
-                    }
+                var sqlDataReader = await tableCommand.ExecuteReaderAsync(CommandBehavior.CloseConnection);
+                while (await sqlDataReader.ReadAsync())
+                {
+                    var ownerName = sqlDataReader.GetString(0);
+                    owners.Add(ownerName);
                 }
-            }
-            finally
-            {
-                conn.Close();
             }
 
             return owners;
@@ -330,7 +323,7 @@ namespace NMG.Core.Reader
                             });
                         }
 
-                     
+
                     }
                 }
             }
@@ -341,5 +334,5 @@ namespace NMG.Core.Reader
             return hasManyRelationships;
         }
     }
-  
+
 }

@@ -1,3 +1,4 @@
+using System;
 using System.CodeDom;
 using System.Linq;
 using System.Text;
@@ -97,7 +98,7 @@ namespace NMG.Core.Generator
             }
 
             // Property Map
-            foreach (var column in Table.Columns.Where(x => !x.IsPrimaryKey && (!x.IsForeignKey || !appPrefs.IncludeForeignKeys)))
+            foreach (var column in Table.Columns.Where(x => !x.IsPrimaryKey && (!x.IsForeignKey || !appPrefs.IncludeForeignKeys)).OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase))
             {
                 constructor.Statements.Add(new CodeSnippetStatement(TABS + mapper.Map(column, Formatter, appPrefs.IncludeLengthAndScale)));
             }
@@ -109,7 +110,10 @@ namespace NMG.Core.Generator
             }
             
             // Bag 
-            Table.HasManyRelationships.ToList().ForEach(x => constructor.Statements.Add(new CodeSnippetStatement(mapper.Bag(x, Formatter))));
+            if (appPrefs.IncludeHasMany)
+            {
+                Table.HasManyRelationships.ToList().ForEach(x => constructor.Statements.Add(new CodeSnippetStatement(mapper.Bag(x, Formatter))));
+            }
 
             newType.Members.Add(constructor);
 

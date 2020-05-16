@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.OleDb;
 using System.Data.SQLite;
 using System.Linq;
+using System.Threading.Tasks;
+
 using NMG.Core.Domain;
 
 namespace NMG.Core.Reader
@@ -159,9 +161,9 @@ namespace NMG.Core.Reader
             return tables;
         }
 
-        public IList<string> GetOwners()
+        public Task<IList<string>> GetOwners()
         {
-            var owners = new List<string>();
+            IList<string> owners = new List<string>();
 
             using (var sqlCon = new OleDbConnection(_connectionStr))
             {
@@ -187,7 +189,7 @@ namespace NMG.Core.Reader
                 }
             }
 
-            return owners;
+            return Task.FromResult(owners);
         }
 
         public List<string> GetSequences(string owner)

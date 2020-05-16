@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.OracleClient;
 using System.Linq;
+using System.Threading.Tasks;
+
 using NMG.Core.Domain;
 
 namespace NMG.Core.Reader
@@ -146,9 +148,9 @@ order by column_id";
             return tables;
         }
 
-        public IList<string> GetOwners()
+        public Task<IList<string>> GetOwners()
         {
-            var owners = new List<string>();
+            IList<string> owners = new List<string>();
             using (var conn = new OracleConnection(connectionStr))
             {
                 conn.Open();
@@ -166,7 +168,7 @@ order by column_id";
                 }
                 conn.Close();
             }
-            return owners;
+            return Task.FromResult(owners);
         }
 
         public List<string> GetSequences(string owner)

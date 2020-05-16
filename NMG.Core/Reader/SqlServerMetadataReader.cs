@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
+
 using NMG.Core.Domain;
 
 namespace NMG.Core.Reader
@@ -115,9 +117,9 @@ from information_schema.columns c
 			return columns;
 		}
 
-		public IList<string> GetOwners()
+		public Task<IList<string>> GetOwners()
 		{
-			var owners = new List<string>();
+			IList<string> owners = new List<string>();
 			var conn = new SqlConnection(connectionStr);
 			conn.Open();
 			try {
@@ -133,7 +135,7 @@ from information_schema.columns c
 			} finally {
 				conn.Close();
 			}
-			return owners;
+            return Task.FromResult(owners);
 		}
 
 		public List<Table> GetTables(string owner)

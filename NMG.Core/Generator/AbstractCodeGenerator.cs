@@ -14,7 +14,7 @@ namespace NMG.Core.Generator
         protected Language language;
 
         protected AbstractCodeGenerator(
-            string filePath, string additionalFolder, string tableName, string nameSpace, string assemblyName, string sequenceName, 
+            string filePath, string additionalFolder, string tableName, string nameSpace, string assemblyName, string sequenceName,
             Table table, ApplicationPreferences appPrefs)
             : base(filePath, additionalFolder, tableName, nameSpace, assemblyName, sequenceName, table, appPrefs)
         {
@@ -27,7 +27,7 @@ namespace NMG.Core.Generator
             using (provider)
             {
                 var stringWriter = new StringWriter(stringBuilder);
-                provider.GenerateCodeFromCompileUnit(compileUnit, stringWriter, new CodeGeneratorOptions());
+                provider.GenerateCodeFromCompileUnit(compileUnit, stringWriter, new CodeGeneratorOptions { BracingStyle = "C" }); //A property value of C indicates that braces start on the line following the statement or declaration that they are associated with.
             }
             var codeOutput = CleanupCode(stringBuilder.ToString());
             GeneratedCode = codeOutput;
@@ -88,7 +88,7 @@ namespace NMG.Core.Generator
 
         protected CodeDomProvider GetCodeDomProvider()
         {
-            return language == Language.CSharp ? (CodeDomProvider) new CSharpCodeProvider() : new VBCodeProvider();
+            return language == Language.CSharp ? (CodeDomProvider)new CSharpCodeProvider() : new VBCodeProvider();
         }
     }
 }

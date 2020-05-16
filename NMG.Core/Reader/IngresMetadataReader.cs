@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace NMG.Core.Reader
 {
     using System;
@@ -355,9 +357,9 @@ namespace NMG.Core.Reader
             return tables;
         }
 
-        public IList<string> GetOwners()
+        public Task<IList<string>> GetOwners()
         {
-            var owners = new List<string>();
+            IList<string> owners = new List<string>();
             var conn = new IngresConnection(_connectionString);
 
             conn.Open();
@@ -380,7 +382,7 @@ namespace NMG.Core.Reader
                 conn.Close();
             }
 
-            return owners;
+            return Task.FromResult(owners);
         }
 
         public List<string> GetSequences(string owner)

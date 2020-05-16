@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+
 using NUnit.Framework;
 using NMG.Core.Reader;
 
@@ -18,9 +20,9 @@ namespace NMG.Tests.Reader
         }
 
         [Test()]
-        public void GetOwnersTest()
+        public async Task GetOwnersTest()
         {
-            var owners = oracleMetadataReader.GetOwners();
+            var owners = await oracleMetadataReader.GetOwners();
             Assert.IsNotNull(owners);
             Assert.IsTrue(owners.Any());
             Assert.IsTrue(owners.Contains("SCOTT"));

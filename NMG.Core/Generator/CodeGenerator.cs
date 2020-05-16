@@ -280,6 +280,10 @@ namespace NMG.Core.Generator
                 string lastOne = null;
                 foreach (var fk in Table.Columns.Where(c => c.IsForeignKey && !c.IsPrimaryKey))
                 {
+                    if (fk.ForeignKeyTableName == null)
+                    {
+                        continue;
+                    }
                     var typeName = appPrefs.ClassNamePrefix + pascalCaseTextFormatter.FormatSingular(fk.ForeignKeyTableName);
                     var propertyName = Formatter.FormatSingular(fk.ForeignKeyTableName);
                     var fieldName = FixPropertyWithSameClassName(propertyName, Table.Name);

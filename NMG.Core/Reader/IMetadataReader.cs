@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using NMG.Core.Domain;
 
 namespace NMG.Core.Reader
@@ -7,7 +9,7 @@ namespace NMG.Core.Reader
     {
         IList<Column> GetTableDetails(Table table, string owner);
         List<Table> GetTables(string owner);
-        IList<string> GetOwners();
+        Task<IList<string>> GetOwners();
         List<string> GetSequences(string owner);
         PrimaryKey DeterminePrimaryKeys(Table table);
         IList<ForeignKey> DetermineForeignKeyReferences(Table table);

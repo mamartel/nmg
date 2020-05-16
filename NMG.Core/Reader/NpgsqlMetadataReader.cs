@@ -5,6 +5,7 @@ using System.Text;
 using NMG.Core.Domain;
 using Npgsql;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace NMG.Core.Reader
 {
@@ -126,9 +127,9 @@ namespace NMG.Core.Reader
                 return columns;
             }
 
-            public IList<string> GetOwners()
+            public Task<IList<string>> GetOwners()
             {
-                var owners = new List<string>();
+                IList<string> owners = new List<string>();
                 var conn = new NpgsqlConnection(connectionStr);
                 conn.Open();
                 using (conn)
@@ -146,7 +147,7 @@ namespace NMG.Core.Reader
                     }
                 }
 
-                return owners;
+                return Task.FromResult(owners);
             }
 
             public List<Table> GetTables(string owner)
