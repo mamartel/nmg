@@ -137,6 +137,7 @@ namespace NHibernateMappingGenerator
         protected override void OnLoad(EventArgs e)
         {
             LoadApplicationSettings();
+            connectBtn.PerformClick();
         }
 
         private void LoadApplicationSettings()
