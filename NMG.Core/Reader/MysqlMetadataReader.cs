@@ -20,75 +20,62 @@ namespace NMG.Core.Reader
 
         #region IMetadataReader Members
 
-        public IList<Column> GetTableDetails(Table table, string owner)
+        public async Task<IList<Column>> GetTableDetails(Table table, string owner)
         {
             var columns = new List<Column>();
-            var conn = new MySqlConnection(connectionStr);
-            conn.Open();
-            try
+            using (var conn = new MySqlConnection(connectionStr))
             {
-                using (conn)
+                await conn.OpenAsync().ConfigureAwait(false);
+
+                using (MySqlCommand tableDetailsCommand = conn.CreateCommand())
                 {
-                    using (MySqlCommand tableDetailsCommand = conn.CreateCommand())
+                    tableDetailsCommand.CommandText = $"DESCRIBE `{owner}`.`{table}`";
+                    using (MySqlDataReader sqlDataReader = tableDetailsCommand.ExecuteReader(CommandBehavior.Default))
                     {
-                        tableDetailsCommand.CommandText = $"DESCRIBE `{owner}`.`{table}`";
-                        using (MySqlDataReader sqlDataReader = tableDetailsCommand.ExecuteReader(CommandBehavior.Default))
+                        while (await sqlDataReader.ReadAsync())
                         {
-                            while (sqlDataReader.Read())
+                            string columnName = sqlDataReader.GetString(0);
+                            string dataType = sqlDataReader.GetString(1);
+                            bool isNullable = sqlDataReader.GetString(2).Equals("YES", StringComparison.CurrentCultureIgnoreCase);
+                            bool isPrimaryKey =
+                                (!sqlDataReader.IsDBNull(3) && sqlDataReader.GetString(3).Equals(
+                                    MysqlConstraintType.PrimaryKey.ToString(),
+                                    StringComparison.CurrentCultureIgnoreCase));
+                            bool isForeignKey =
+                                (!sqlDataReader.IsDBNull(3) && sqlDataReader.GetString(3).Equals(
+                                    MysqlConstraintType.ForeignKey.ToString(),
+                                    StringComparison.CurrentCultureIgnoreCase));
+
+                            var m = new DataTypeMapper();
+
+                            columns.Add(new Column
                             {
-                                string columnName = sqlDataReader.GetString(0);
-                                string dataType = sqlDataReader.GetString(1);
-                                bool isNullable = sqlDataReader.GetString(2).Equals("YES",
-                                                                                    StringComparison.
-                                                                                        CurrentCultureIgnoreCase);
-                                bool isPrimaryKey =
-                                    (!sqlDataReader.IsDBNull(3)
-                                         ? sqlDataReader.GetString(3).Equals(
-                                             MysqlConstraintType.PrimaryKey.ToString(),
-                                             StringComparison.CurrentCultureIgnoreCase)
-                                         : false);
-                                bool isForeignKey =
-                                    (!sqlDataReader.IsDBNull(3)
-                                         ? sqlDataReader.GetString(3).Equals(
-                                             MysqlConstraintType.ForeignKey.ToString(),
-                                             StringComparison.CurrentCultureIgnoreCase)
-                                         : false);
+                                Name = columnName,
+                                DataType = dataType,
+                                IsNullable = isNullable,
+                                IsPrimaryKey = isPrimaryKey,
+                                //IsPrimaryKey(selectedTableName.Name, columnName)
+                                IsForeignKey = isForeignKey,
+                                // IsFK()
+                                MappedDataType =
+                                    m.MapFromDBType(ServerType.MySQL, dataType, null, null, null).ToString(),
+                                //DataLength = dataLength
+                            });
 
-                                var m = new DataTypeMapper();
-
-                                columns.Add(new Column
-                                {
-                                    Name = columnName,
-                                    DataType = dataType,
-                                    IsNullable = isNullable,
-                                    IsPrimaryKey = isPrimaryKey,
-                                    //IsPrimaryKey(selectedTableName.Name, columnName)
-                                    IsForeignKey = isForeignKey,
-                                    // IsFK()
-                                    MappedDataType =
-                                        m.MapFromDBType(ServerType.MySQL, dataType, null, null, null).ToString(),
-                                    //DataLength = dataLength
-                                });
-
-                                table.Columns = columns;
-                            }
-                            table.Owner = owner;
-                            table.PrimaryKey = DeterminePrimaryKeys(table);
-
-                            // Need to find the table name associated with the FK
-                            foreach (var c in table.Columns)
-                            {
-                                c.ForeignKeyTableName = GetForeignKeyReferenceTableName(table.Name, c.Name);
-                            }
-                            table.ForeignKeys = DetermineForeignKeyReferences(table);
-                            table.HasManyRelationships = DetermineHasManyRelationships(table);
+                            table.Columns = columns;
                         }
+                        table.Owner = owner;
+                        table.PrimaryKey = DeterminePrimaryKeys(table);
+
+                        // Need to find the table name associated with the FK
+                        foreach (var c in table.Columns)
+                        {
+                            c.ForeignKeyTableName = GetForeignKeyReferenceTableName(table.Name, c.Name);
+                        }
+                        table.ForeignKeys = DetermineForeignKeyReferences(table);
+                        table.HasManyRelationships = DetermineHasManyRelationships(table);
                     }
                 }
-            }
-            finally
-            {
-                conn.Close();
             }
 
             return columns;
@@ -117,31 +104,24 @@ namespace NMG.Core.Reader
             return owners;
         }
 
-        public List<Table> GetTables(string owner)
+        public async Task<List<Table>> GetTables(string owner)
         {
             var tables = new List<Table>();
-            var conn = new MySqlConnection(connectionStr);
-            conn.Open();
-            try
+            using (var conn = new MySqlConnection(connectionStr))
             {
-                using (conn)
+                await conn.OpenAsync().ConfigureAwait(false);
+                var tableCommand = conn.CreateCommand();
+                tableCommand.CommandText = String.Format("select table_name from information_schema.tables where table_type like 'BASE TABLE' and TABLE_SCHEMA = '{0}'", owner);
+                var sqlDataReader = tableCommand.ExecuteReader(CommandBehavior.CloseConnection);
+                while (sqlDataReader.Read())
                 {
-                    var tableCommand = conn.CreateCommand();
-                    tableCommand.CommandText = String.Format("select table_name from information_schema.tables where table_type like 'BASE TABLE' and TABLE_SCHEMA = '{0}'", owner);
-                    var sqlDataReader = tableCommand.ExecuteReader(CommandBehavior.CloseConnection);
-                    while (sqlDataReader.Read())
-                    {
-                        var tableName = sqlDataReader.GetString(0);
-                        tables.Add(new Table { Name = tableName });
-                    }
+                    var tableName = sqlDataReader.GetString(0);
+                    tables.Add(new Table { Name = tableName });
                 }
+
+                tables.Sort((x, y) => x.Name.CompareTo(y.Name));
+                return tables;
             }
-            finally
-            {
-                conn.Close();
-            }
-            tables.Sort((x, y) => x.Name.CompareTo(y.Name));
-            return tables;
         }
         public List<string> GetSequences(string owner)
         {

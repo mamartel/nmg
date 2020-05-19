@@ -7,8 +7,8 @@ namespace NMG.Core.Reader
 {
     public interface IMetadataReader
     {
-        IList<Column> GetTableDetails(Table table, string owner);
-        List<Table> GetTables(string owner);
+        Task<IList<Column>> GetTableDetails(Table table, string owner);
+        Task<List<Table>> GetTables(string owner);
         Task<IList<string>> GetOwners();
         List<string> GetSequences(string owner);
         PrimaryKey DeterminePrimaryKeys(Table table);

@@ -354,25 +354,28 @@ namespace NHibernateMappingGenerator
             cSharpType.DataSource = new DotNetTypes();
         }
 
-        private void OwnersSelectedIndexChanged(object sender, EventArgs e)
+        private async void OwnersSelectedIndexChanged(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
             try
             {
-                PopulateTablesAndSequences();
+                tabControl1.UseWaitCursor = true;
+                tabControl1.Enabled = false;
+                await PopulateTablesAndSequences();
             }
             finally
             {
-                Cursor.Current = Cursors.Default;
+                tabControl1.Enabled = true;
+                tabControl1.UseWaitCursor = false;
             }
         }
 
-        private void TablesListSelectedIndexChanged(object sender, EventArgs e)
+        private async void TablesListSelectedIndexChanged(object sender, EventArgs e)
         {
             toolStripStatusLabel.Text = string.Empty;
             try
             {
-                Cursor.Current = Cursors.WaitCursor;
+                tabControl1.UseWaitCursor = true;
+                ToogleTabPagesEnabled(false);
                 if (tablesListBox.SelectedIndex == -1)
                 {
                     dbTableDetailsGridView.DataSource = new List<Column>();
@@ -382,13 +385,11 @@ namespace NHibernateMappingGenerator
                 var lastTableSelectedIndex = LastTableSelected();
                 if (lastTableSelectedIndex != null)
                 {
-                    var table = tablesListBox.Items[lastTableSelectedIndex.Value] as Table;
-
-                    if (table != null)
+                    if (tablesListBox.Items[lastTableSelectedIndex.Value] is Table table)
                     {
                         CaptureApplicationSettings();
 
-                        PopulateTableDetails(table);
+                        await PopulateTableDetails(table);
 
                         ToggleColumnsBasedOnAppSettings(applicationSettings);
 
@@ -407,10 +408,18 @@ namespace NHibernateMappingGenerator
             }
             finally
             {
-                Cursor.Current = Cursors.Default;
+                ToogleTabPagesEnabled(true);
+                tabControl1.UseWaitCursor = false;
             }
         }
 
+        private void ToogleTabPagesEnabled(bool enabled)
+        {
+            foreach (Control page in tabControl1.Controls)
+            {
+                page.Enabled = enabled;
+            }
+        }
 
         readonly IList<int> _cachedTableListSelection = new List<int>();
         private Table _currentTable;
@@ -431,15 +440,14 @@ namespace NHibernateMappingGenerator
             return lastTableIndex;
         }
 
-        private void PopulateTableDetails(Table selectedTable)
+        private async Task PopulateTableDetails(Table selectedTable)
         {
             toolStripStatusLabel.Text = string.Empty;
             try
             {
                 //dbTableDetailsGridView.AutoGenerateColumns = true;
                 _currentTable = selectedTable;
-                gridData = metadataReader.GetTableDetails(selectedTable, ownersComboBox.SelectedItem.ToString()) ??
-                           new List<Column>();
+                gridData = await metadataReader.GetTableDetails(selectedTable, ownersComboBox.SelectedItem.ToString()) ?? new List<Column>();
 
                 // Show table details, and toggle columns based on app settings
                 dbTableDetailsGridView.SuspendLayout();
@@ -502,7 +510,7 @@ namespace NHibernateMappingGenerator
             ownersComboBox.SelectedIndex = 0;
         }
 
-        private void PopulateTablesAndSequences()
+        private async Task PopulateTablesAndSequences()
         {
             try
             {
@@ -514,7 +522,7 @@ namespace NHibernateMappingGenerator
                     tablesListBox.DataSource = new List<Table>();
                     return;
                 }
-                _tables = metadataReader.GetTables(ownersComboBox.SelectedItem.ToString());
+                _tables = await metadataReader.GetTables(ownersComboBox.SelectedItem.ToString());
                 tablesListBox.Enabled = false;
                 TableFilterTextBox.Enabled = false;
                 tablesListBox.DataSource = _tables;

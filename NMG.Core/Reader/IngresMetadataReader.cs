@@ -18,10 +18,10 @@ namespace NMG.Core.Reader
 
         #region Implementation of IMetadataReader
 
-        public IList<Column> GetTableDetails(Table table, string owner)
+        public Task<IList<Column>> GetTableDetails(Table table, string owner)
         {
             table.Owner = owner;
-            var columns = new List<Column>();
+            IList<Column> columns = new List<Column>();
             var conn = new IngresConnection(_connectionString);
             conn.Open();
             try
@@ -83,7 +83,7 @@ namespace NMG.Core.Reader
                 conn.Close();
             }
 
-            return columns;
+            return Task.FromResult(columns);
         }
 
         private IList<HasMany> DetermineHasManyRelationships(Table table)
@@ -324,7 +324,7 @@ namespace NMG.Core.Reader
             }
         }
 
-        public List<Table> GetTables(string owner)
+        public Task<List<Table>> GetTables(string owner)
         {
             var tables = new List<Table>();
             var conn = new IngresConnection(_connectionString);
@@ -354,7 +354,7 @@ namespace NMG.Core.Reader
             {
                 conn.Close();
             }
-            return tables;
+            return Task.FromResult(tables);
         }
 
         public Task<IList<string>> GetOwners()

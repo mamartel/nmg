@@ -47,9 +47,9 @@ namespace NMG.Core.Reader
         /// <param name="table"></param>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public IList<Column> GetTableDetails(Table table, string owner)
+        public Task<IList<Column>> GetTableDetails(Table table, string owner)
         {
-            var columns = new List<Column>();
+            IList<Column> columns = new List<Column>();
             using (var conn = new OracleConnection(connectionStr))
             {
                 conn.Open();
@@ -121,10 +121,10 @@ order by column_id";
                 conn.Close();
             }
 
-            return columns;
+            return Task.FromResult(columns);
         }
 
-        public List<Table> GetTables(string owner)
+        public Task<List<Table>> GetTables(string owner)
         {
             var tables = new List<Table>();
             var conn = new OracleConnection(connectionStr);
@@ -145,7 +145,7 @@ order by column_id";
                     }
                 }
             }
-            return tables;
+            return Task.FromResult(tables);
         }
 
         public Task<IList<string>> GetOwners()

@@ -29,9 +29,9 @@ namespace NMG.Tests.Reader
         }
         
         [Test]
-        public void GetTableTest()
+        public async Task GetTableTest()
         {
-            var tables = oracleMetadataReader.GetTables("SCOTT");
+            var tables = await oracleMetadataReader.GetTables("SCOTT");
             Assert.IsNotNull(tables);
             Assert.IsNotEmpty(tables);
             Assert.IsTrue(tables.Any(t => string.Equals(t.Name, "PRODUCTS", StringComparison.OrdinalIgnoreCase)));
@@ -47,11 +47,11 @@ namespace NMG.Tests.Reader
         }
         
         [Test]
-        public void GetTableDetailsTest()
+        public async Task GetTableDetailsTest()
         {
-            var tables = oracleMetadataReader.GetTables("SCOTT");
+            var tables = await oracleMetadataReader.GetTables("SCOTT");
             var tableInv = tables.Single(t => string.Equals(t.Name, "INVENTORIES", StringComparison.OrdinalIgnoreCase));
-            var invColumns = oracleMetadataReader.GetTableDetails(tableInv, "SCOTT");
+            var invColumns = await oracleMetadataReader.GetTableDetails(tableInv, "SCOTT");
             Assert.IsNotNull(invColumns);
             Assert.IsTrue(invColumns.Any());
             Assert.AreEqual(invColumns.Count, 6);

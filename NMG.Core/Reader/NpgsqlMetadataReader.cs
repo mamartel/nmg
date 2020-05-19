@@ -21,9 +21,9 @@ namespace NMG.Core.Reader
 
             #region IMetadataReader Members
 
-            public IList<Column> GetTableDetails(Table table, string owner)
+            public Task<IList<Column>> GetTableDetails(Table table, string owner)
             {
-                var columns = new List<Column>();
+                IList<Column> columns = new List<Column>();
                 var conn = new NpgsqlConnection(connectionStr);
                 conn.Open();
                 using (conn)
@@ -124,7 +124,7 @@ namespace NMG.Core.Reader
                         }
                     }
                 }
-                return columns;
+                return Task.FromResult(columns);
             }
 
             public Task<IList<string>> GetOwners()
@@ -150,7 +150,7 @@ namespace NMG.Core.Reader
                 return Task.FromResult(owners);
             }
 
-            public List<Table> GetTables(string owner)
+            public Task<List<Table>> GetTables(string owner)
             {
                 var tables = new List<Table>();
                 var conn = new NpgsqlConnection(connectionStr);
@@ -167,7 +167,7 @@ namespace NMG.Core.Reader
                     }
                 }
                 tables.Sort((x, y) => x.Name.CompareTo(y.Name));
-                return tables;
+                return Task.FromResult(tables);
             }
             public List<string> GetSequences(string owner)
             {

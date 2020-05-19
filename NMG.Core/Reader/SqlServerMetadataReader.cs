@@ -22,9 +22,9 @@ namespace NMG.Core.Reader
 
 		#region IMetadataReader Members
 
-		public IList<Column> GetTableDetails(Table table, string owner)
+		public Task<IList<Column>> GetTableDetails(Table table, string owner)
 		{
-			var columns = new List<Column>();
+			IList<Column> columns = new List<Column>();
 			var conn = new SqlConnection(connectionStr);
 			conn.Open();
 			try {
@@ -114,7 +114,7 @@ from information_schema.columns c
 				conn.Close();
 			}
 			
-			return columns;
+			return Task.FromResult(columns);
 		}
 
 		public Task<IList<string>> GetOwners()
@@ -138,7 +138,7 @@ from information_schema.columns c
             return Task.FromResult(owners);
 		}
 
-		public List<Table> GetTables(string owner)
+		public Task<List<Table>> GetTables(string owner)
 		{
 			var tables = new List<Table>();
 			var conn = new SqlConnection(connectionStr);
@@ -157,7 +157,7 @@ from information_schema.columns c
 			} finally {
 				conn.Close();
 			}
-			return tables;
+			return Task.FromResult(tables);
 		}
 
         public List<string> GetSequences(string owner)

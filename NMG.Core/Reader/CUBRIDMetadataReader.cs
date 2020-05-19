@@ -49,7 +49,7 @@ namespace NMG.Core.Reader
             return Task.FromResult(owners);
         }
 
-        public List<Table> GetTables(string owner)
+        public Task<List<Table>> GetTables(string owner)
         {
             var tables = new List<Table>();
             var conn = new CUBRIDConnection(connectionStr);
@@ -74,7 +74,7 @@ namespace NMG.Core.Reader
 
             tables.Sort((x, y) => String.Compare(x.Name, y.Name, StringComparison.Ordinal));
 
-            return tables;
+            return Task.FromResult(tables);
         }
 
         public List<string> GetSequences(string owner)
@@ -174,9 +174,9 @@ namespace NMG.Core.Reader
             return hasManyRelationships;
         }
 
-        public IList<Column> GetTableDetails(Table table, string owner)
+        public Task<IList<Column>> GetTableDetails(Table table, string owner)
         {
-            var columns = new List<Column>();
+            IList<Column> columns = new List<Column>();
             var conn = new CUBRIDConnection(connectionStr);
             conn.Open();
             try
@@ -268,7 +268,7 @@ namespace NMG.Core.Reader
                 conn.Close();
             }
 
-            return columns;
+            return Task.FromResult(columns);
         }
 
         public IList<ForeignKey> DetermineForeignKeyReferences(Table table)
