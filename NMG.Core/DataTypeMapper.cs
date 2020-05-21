@@ -147,9 +147,15 @@ namespace NMG.Core
 
         private Type MapFromMySqlDBType(string dataType, int? dataLength, int? dataPrecision, int? dataScale)
         {
-            if (dataType.Equals("TINYINT(1)", StringComparison.OrdinalIgnoreCase))
+            if (dataType.StartsWith("TINYINT(1)", StringComparison.OrdinalIgnoreCase))
             {
                 return typeof(bool);
+            }
+
+            int indexOf = dataType.IndexOf('(');
+            if (indexOf > 0)
+            {
+                dataType = dataType.Substring(0, indexOf);
             }
 
             return MapFromDBType(dataType, dataLength, dataPrecision, dataScale);
