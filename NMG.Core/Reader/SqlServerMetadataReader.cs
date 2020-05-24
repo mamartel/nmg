@@ -80,7 +80,7 @@ from information_schema.columns c
 													IsPrimaryKey = isPrimaryKey,
 													IsForeignKey = isForeignKey,
                                                     IsUnique = isUnique,
-													MappedDataType = m.MapFromDBType(ServerType.SqlServer, dataType, characterMaxLenth, numericPrecision, numericScale).ToString(),
+													MappedDataType = m.MapFromDBType(ServerType.SqlServer, dataType, characterMaxLenth, numericPrecision, numericScale),
 													DataLength = characterMaxLenth,
                                                     DataScale = numericScale,
                                                     DataPrecision = numericPrecision,

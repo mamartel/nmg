@@ -97,7 +97,7 @@ order by column_id";
                                 IsPrimaryKey = ConstraintTypeResolver.IsPrimaryKey(constraintType),
                                 IsForeignKey = ConstraintTypeResolver.IsForeignKey(constraintType),
                                 IsUnique = ConstraintTypeResolver.IsUnique(constraintType),
-                                MappedDataType = m.MapFromDBType(ServerType.Oracle, oracleDataReader.GetOracleString(1).Value, dataLength, dataPrecision, dataScale).ToString(),
+                                MappedDataType = m.MapFromDBType(ServerType.Oracle, oracleDataReader.GetOracleString(1).Value, dataLength, dataPrecision, dataScale),
                                 DataLength = dataLength,
                                 DataPrecision = dataPrecision,
                                 DataScale = dataScale

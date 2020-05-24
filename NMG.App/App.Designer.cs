@@ -72,6 +72,8 @@ namespace NHibernateMappingGenerator
             this.mapCodeFastColoredTextBox = new FastColoredTextBoxNS.FastColoredTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.domainCodeFastColoredTextBox = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.testCodeFastColoredTextBox = new FastColoredTextBoxNS.FastColoredTextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.cancelButton = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
@@ -87,6 +89,11 @@ namespace NHibernateMappingGenerator
             this.pOracleOnlyOptions = new System.Windows.Forms.Panel();
             this.connectionButton = new System.Windows.Forms.Button();
             this.advanceSettingsTabPage = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.nhibernatePersistenceTestingRadioButton = new System.Windows.Forms.RadioButton();
+            this.fluentNHibernateRadioButton = new System.Windows.Forms.RadioButton();
+            this.testAttributeTextBox = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.removeFieldPrefixButton = new System.Windows.Forms.Button();
             this.addFieldPrefixButton = new System.Windows.Forms.Button();
@@ -118,6 +125,7 @@ namespace NHibernateMappingGenerator
             this.noValidationRadioButton = new System.Windows.Forms.RadioButton();
             this.nhibernateValidationRadioButton = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.entityFrameworkRadionBtn = new System.Windows.Forms.RadioButton();
             this.castleMappingOption = new System.Windows.Forms.RadioButton();
             this.fluentMappingOption = new System.Windows.Forms.RadioButton();
             this.hbmMappingOption = new System.Windows.Forms.RadioButton();
@@ -136,7 +144,6 @@ namespace NHibernateMappingGenerator
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-            this.entityFrameworkRadionBtn = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dbTableDetailsGridView)).BeginInit();
             this.mainTabControl.SuspendLayout();
             this.basicSettingsTabPage.SuspendLayout();
@@ -151,10 +158,13 @@ namespace NHibernateMappingGenerator
             ((System.ComponentModel.ISupportInitialize)(this.mapCodeFastColoredTextBox)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.domainCodeFastColoredTextBox)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.testCodeFastColoredTextBox)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.pOracleOnlyOptions.SuspendLayout();
             this.advanceSettingsTabPage.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBox10.SuspendLayout();
             this.groupBox9.SuspendLayout();
             this.groupBox8.SuspendLayout();
@@ -475,6 +485,7 @@ namespace NHibernateMappingGenerator
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 6);
             this.tabControl1.Name = "tabControl1";
@@ -544,6 +555,32 @@ namespace NHibernateMappingGenerator
             this.domainCodeFastColoredTextBox.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.domainCodeFastColoredTextBox.Size = new System.Drawing.Size(913, 345);
             this.domainCodeFastColoredTextBox.TabIndex = 0;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.testCodeFastColoredTextBox);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(919, 351);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Test Code";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // testCodeFastColoredTextBox
+            // 
+            this.testCodeFastColoredTextBox.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.testCodeFastColoredTextBox.BackBrush = null;
+            this.testCodeFastColoredTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.testCodeFastColoredTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.testCodeFastColoredTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.testCodeFastColoredTextBox.IsReplaceMode = false;
+            this.testCodeFastColoredTextBox.Location = new System.Drawing.Point(3, 3);
+            this.testCodeFastColoredTextBox.Name = "testCodeFastColoredTextBox";
+            this.testCodeFastColoredTextBox.Paddings = new System.Windows.Forms.Padding(0);
+            this.testCodeFastColoredTextBox.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.testCodeFastColoredTextBox.Size = new System.Drawing.Size(913, 345);
+            this.testCodeFastColoredTextBox.TabIndex = 2;
             // 
             // groupBox5
             // 
@@ -698,6 +735,7 @@ namespace NHibernateMappingGenerator
             // 
             // advanceSettingsTabPage
             // 
+            this.advanceSettingsTabPage.Controls.Add(this.groupBox6);
             this.advanceSettingsTabPage.Controls.Add(this.groupBox10);
             this.advanceSettingsTabPage.Controls.Add(this.groupBox9);
             this.advanceSettingsTabPage.Controls.Add(this.groupBox8);
@@ -713,6 +751,58 @@ namespace NHibernateMappingGenerator
             this.advanceSettingsTabPage.TabIndex = 2;
             this.advanceSettingsTabPage.Text = "Preferences";
             this.advanceSettingsTabPage.UseVisualStyleBackColor = true;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.nhibernatePersistenceTestingRadioButton);
+            this.groupBox6.Controls.Add(this.fluentNHibernateRadioButton);
+            this.groupBox6.Controls.Add(this.testAttributeTextBox);
+            this.groupBox6.Controls.Add(this.label10);
+            this.groupBox6.Location = new System.Drawing.Point(842, 6);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(200, 140);
+            this.groupBox6.TabIndex = 9;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Persistence Tests";
+            // 
+            // nhibernatePersistenceTestingRadioButton
+            // 
+            this.nhibernatePersistenceTestingRadioButton.AutoSize = true;
+            this.nhibernatePersistenceTestingRadioButton.Location = new System.Drawing.Point(11, 42);
+            this.nhibernatePersistenceTestingRadioButton.Name = "nhibernatePersistenceTestingRadioButton";
+            this.nhibernatePersistenceTestingRadioButton.Size = new System.Drawing.Size(175, 17);
+            this.nhibernatePersistenceTestingRadioButton.TabIndex = 3;
+            this.nhibernatePersistenceTestingRadioButton.TabStop = true;
+            this.nhibernatePersistenceTestingRadioButton.Text = "NHibernate Persistence Testing";
+            this.nhibernatePersistenceTestingRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // fluentNHibernateRadioButton
+            // 
+            this.fluentNHibernateRadioButton.AutoSize = true;
+            this.fluentNHibernateRadioButton.Location = new System.Drawing.Point(11, 19);
+            this.fluentNHibernateRadioButton.Name = "fluentNHibernateRadioButton";
+            this.fluentNHibernateRadioButton.Size = new System.Drawing.Size(111, 17);
+            this.fluentNHibernateRadioButton.TabIndex = 2;
+            this.fluentNHibernateRadioButton.TabStop = true;
+            this.fluentNHibernateRadioButton.Text = "Fluent NHibernate";
+            this.fluentNHibernateRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // testAttributeTextBox
+            // 
+            this.testAttributeTextBox.Location = new System.Drawing.Point(81, 65);
+            this.testAttributeTextBox.Name = "testAttributeTextBox";
+            this.testAttributeTextBox.Size = new System.Drawing.Size(113, 20);
+            this.testAttributeTextBox.TabIndex = 1;
+            this.testAttributeTextBox.Text = "Test";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(8, 68);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(70, 13);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "Test Attribute";
             // 
             // groupBox10
             // 
@@ -1042,6 +1132,17 @@ namespace NHibernateMappingGenerator
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Mapping Style";
             // 
+            // entityFrameworkRadionBtn
+            // 
+            this.entityFrameworkRadionBtn.AutoSize = true;
+            this.entityFrameworkRadionBtn.Location = new System.Drawing.Point(6, 109);
+            this.entityFrameworkRadionBtn.Name = "entityFrameworkRadionBtn";
+            this.entityFrameworkRadionBtn.Size = new System.Drawing.Size(106, 17);
+            this.entityFrameworkRadionBtn.TabIndex = 11;
+            this.entityFrameworkRadionBtn.TabStop = true;
+            this.entityFrameworkRadionBtn.Text = "Entity Framework";
+            this.entityFrameworkRadionBtn.UseVisualStyleBackColor = true;
+            // 
             // castleMappingOption
             // 
             this.castleMappingOption.AutoSize = true;
@@ -1224,7 +1325,7 @@ namespace NHibernateMappingGenerator
             this.toolStripStatusLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.toolStripStatusLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripStatusLabel.ForeColor = System.Drawing.Color.Red;
-            this.toolStripStatusLabel.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(856, 17);
             this.toolStripStatusLabel.Spring = true;
             this.toolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1234,17 +1335,6 @@ namespace NHibernateMappingGenerator
             this.toolStripProgressBar1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.Size = new System.Drawing.Size(300, 16);
-            // 
-            // entityFrameworkRadionBtn
-            // 
-            this.entityFrameworkRadionBtn.AutoSize = true;
-            this.entityFrameworkRadionBtn.Location = new System.Drawing.Point(6, 109);
-            this.entityFrameworkRadionBtn.Name = "entityFrameworkRadionBtn";
-            this.entityFrameworkRadionBtn.Size = new System.Drawing.Size(106, 17);
-            this.entityFrameworkRadionBtn.TabIndex = 11;
-            this.entityFrameworkRadionBtn.TabStop = true;
-            this.entityFrameworkRadionBtn.Text = "Entity Framework";
-            this.entityFrameworkRadionBtn.UseVisualStyleBackColor = true;
             // 
             // App
             // 
@@ -1256,7 +1346,6 @@ namespace NHibernateMappingGenerator
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "App";
             this.Text = "NHibernate Mapping Generator";
-            this.WindowState = System.Windows.Forms.FormWindowState.Normal;
             ((System.ComponentModel.ISupportInitialize)(this.dbTableDetailsGridView)).EndInit();
             this.mainTabControl.ResumeLayout(false);
             this.basicSettingsTabPage.ResumeLayout(false);
@@ -1272,6 +1361,8 @@ namespace NHibernateMappingGenerator
             ((System.ComponentModel.ISupportInitialize)(this.mapCodeFastColoredTextBox)).EndInit();
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.domainCodeFastColoredTextBox)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.testCodeFastColoredTextBox)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -1279,6 +1370,8 @@ namespace NHibernateMappingGenerator
             this.pOracleOnlyOptions.ResumeLayout(false);
             this.pOracleOnlyOptions.PerformLayout();
             this.advanceSettingsTabPage.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             this.groupBox9.ResumeLayout(false);
@@ -1408,6 +1501,13 @@ namespace NHibernateMappingGenerator
         private CheckBox EnableInflectionsCheckBox;
         private CheckBox nameAsForeignTableCheckBox;
         private RadioButton entityFrameworkRadionBtn;
+        private TabPage tabPage4;
+        private FastColoredTextBoxNS.FastColoredTextBox testCodeFastColoredTextBox;
+        private GroupBox groupBox6;
+        private TextBox testAttributeTextBox;
+        private Label label10;
+        private RadioButton nhibernatePersistenceTestingRadioButton;
+        private RadioButton fluentNHibernateRadioButton;
     }
 }
 

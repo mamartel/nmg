@@ -13,7 +13,8 @@ namespace NHibernateMappingGenerator
         private readonly MappingGenerator mappingGenerator;
         private readonly ContractGenerator contractGenerator;
         private readonly ByCodeGenerator byCodeGenerator;
-        private EntityFrameworkGenerator entityFrameworkGenerator;
+        private readonly EntityFrameworkGenerator entityFrameworkGenerator;
+        private readonly PersistenceSpecificationTestCodeGenerator testGenerator;
 
         public ApplicationController(ApplicationPreferences applicationPreferences, Table table)
         {
@@ -24,6 +25,7 @@ namespace NHibernateMappingGenerator
             castleGenerator = new CastleGenerator(applicationPreferences, table);
             contractGenerator = new ContractGenerator(applicationPreferences, table);
             byCodeGenerator = new ByCodeGenerator(applicationPreferences, table);
+            testGenerator = new PersistenceSpecificationTestCodeGenerator(applicationPreferences, table);
             if (applicationPreferences.ServerType == ServerType.Oracle)
             {
                 mappingGenerator = new OracleMappingGenerator(applicationPreferences, table);
@@ -36,11 +38,15 @@ namespace NHibernateMappingGenerator
 
         public string GeneratedDomainCode { get; set; }
         public string GeneratedMapCode { get; set; }
+        public string GeneratedTestCode { get; set; }
 
         public void Generate(bool writeToFile = true)
         {
             codeGenerator.Generate(writeToFile);
             GeneratedDomainCode = codeGenerator.GeneratedCode;
+
+            testGenerator.Generate(writeToFile);
+            GeneratedTestCode = testGenerator.GeneratedCode;
 
             if (applicationPreferences.IsFluent)
             {
@@ -67,7 +73,7 @@ namespace NHibernateMappingGenerator
                 mappingGenerator.Generate(writeToFile);
                 GeneratedMapCode = mappingGenerator.GeneratedCode;
             }
-
+            
             if(applicationPreferences.GenerateWcfDataContract)
             {
                 contractGenerator.Generate(writeToFile);

@@ -43,7 +43,7 @@ namespace NMG.Core.Reader
                                         Name = row["ColumnName"].ToString(),
                                         IsNullable = (bool)row["AllowDBNull"],
                                         IsPrimaryKey = (bool)row["IsKey"],
-                                        MappedDataType = m.MapFromDBType(ServerType.SQLite, row["DataTypeName"].ToString(), (int)row["ColumnSize"], null, null).ToString(),
+                                        MappedDataType = m.MapFromDBType(ServerType.SQLite, row["DataTypeName"].ToString(), (int)row["ColumnSize"], null, null),
                                         DataLength = (int)row["ColumnSize"],
                                         DataType = row["DataTypeName"].ToString(),
                                         IsUnique = (bool)row["IsUnique"]

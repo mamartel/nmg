@@ -10,6 +10,7 @@ namespace NMG.Core
             FieldNamingConvention = FieldNamingConvention.SameAsDatabase;
             FieldGenerationConvention = FieldGenerationConvention.Field;
             Prefix = string.Empty;
+            TestMethodAttributeName = "Test";
         }
 
         public string TableName { get; set; }
@@ -38,7 +39,7 @@ namespace NMG.Core
 
         public bool IsCastle { get; set; }
 
-        public bool IsByCode { get ; set; }
+        public bool IsByCode { get; set; }
 
         public bool GeneratePartialClasses { get; set; }
 
@@ -49,7 +50,7 @@ namespace NMG.Core
         public string InheritenceAndInterfaces { get; set; }
 
         public string ClassNamePrefix { get; set; }
-        
+
         public bool EnableInflections { get; set; }
 
         public Language Language { get; set; }
@@ -63,7 +64,7 @@ namespace NMG.Core
         public bool GenerateWcfDataContract { get; set; }
 
         public bool GenerateInFolders { get; set; }
-        
+
         public bool UseLazy { get; set; }
 
         public bool IncludeForeignKeys { get; set; }
@@ -78,20 +79,8 @@ namespace NMG.Core
 
         public ValidationStyle ValidatorStyle { get; set; }
 
-        public static ApplicationPreferences Default()
-        {
-            var preferences = new ApplicationPreferences
-                                  {
-                                      FieldGenerationConvention = FieldGenerationConvention.AutoProperty,
-                                      FieldNamingConvention = FieldNamingConvention.SameAsDatabase,
-                                      Prefix = string.Empty,
-                                      IsNhFluent = true,
-                                      Language = Language.CSharp,
-                                      ForeignEntityCollectionType = "IList",
-                                      InheritenceAndInterfaces = "",
-                                      UseLazy = true
-                                  };
-            return preferences;
-        }
+        public string TestMethodAttributeName { get; set; }
+
+        public PersistenceTestingFramework PersistenceTestingFramework { get; set; }
     }
 }

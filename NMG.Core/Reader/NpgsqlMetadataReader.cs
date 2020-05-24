@@ -104,8 +104,7 @@ namespace NMG.Core.Reader
                                     //IsPrimaryKey(selectedTableName.Name, columnName)
                                     IsForeignKey = isForeignKey,                                    
                                     // IsFK()
-                                    MappedDataType =
-                                        m.MapFromDBType(ServerType.PostgreSQL, dataType, null, null, null).ToString(),
+                                    MappedDataType = m.MapFromDBType(ServerType.PostgreSQL, dataType, null, null, null),
                                     //DataLength = dataLength
                                 });
 

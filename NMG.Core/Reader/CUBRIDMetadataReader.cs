@@ -249,8 +249,7 @@ namespace NMG.Core.Reader
                                         DataScale = dataScale,
                                         ForeignKeyTableName = fkTableName,
                                         ConstraintName = constraintName,
-                                        MappedDataType =
-                                            m.MapFromDBType(ServerType.CUBRID, dataType, null, null, null).ToString(),
+                                        MappedDataType = m.MapFromDBType(ServerType.CUBRID, dataType, null, null, null),
                                     });
                         }
                     }

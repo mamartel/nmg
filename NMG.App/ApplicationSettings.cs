@@ -78,6 +78,9 @@ namespace NHibernateMappingGenerator
 
         public ValidationStyle ValidationStyle { get; set; }
 
+        public string TestMethodAttributeName { get; set; }
+
+        public PersistenceTestingFramework PersistenceTestingFramework { get; set; }
 
         public void Save()
         {

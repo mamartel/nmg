@@ -61,10 +61,10 @@ namespace NMG.Tests.Reader
             var columnStoreId = invColumns.Single(s => string.Equals(s.Name, "STORE_ID"));
             
             Assert.IsTrue(string.Equals(columnId.DataType, "NUMBER"));
-            Assert.IsTrue(string.Equals(columnId.MappedDataType, typeof(Int64).ToString()), "Invalid id mapped data type");
+            Assert.IsTrue(string.Equals(columnId.MappedDataType, typeof(Int64)), "Invalid id mapped data type");
             
             Assert.IsTrue(string.Equals(columnStoreId.DataType, "NUMBER"));
-            Assert.IsTrue(string.Equals(columnStoreId.MappedDataType, typeof(Int32).ToString()), "Invalid store id mapped data type");
+            Assert.IsTrue(string.Equals(columnStoreId.MappedDataType, typeof(Int32)), "Invalid store id mapped data type");
         }
     }
 }

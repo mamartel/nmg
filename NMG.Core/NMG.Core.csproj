@@ -91,6 +91,7 @@
     <Compile Include="Domain\ColumnDetail.cs" />
     <Compile Include="Domain\DotNetTypes.cs" />
     <Compile Include="Domain\Language.cs" />
+    <Compile Include="Domain\PersistenceTestingFramework.cs" />
     <Compile Include="Domain\PrimaryKeyType.cs" />
     <Compile Include="Domain\Table.cs" />
     <Compile Include="Domain\ValidationStyle.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="DataTypeMapper.cs" />
     <Compile Include="Generator\MysqlMappingGenerator.cs" />
     <Compile Include="Generator\NpgsqlMappingGenerator.cs" />
+    <Compile Include="Generator\PersistenceSpecificationTestCodeGenerator.cs" />
     <Compile Include="MetadataFactory.cs" />
     <Compile Include="ApplicationPreferences.cs" />
     <Compile Include="Properties\Annotations.cs" />

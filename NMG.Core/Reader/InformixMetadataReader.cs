@@ -150,7 +150,7 @@ where t.owner = '{owner}'
                                     IsPrimaryKey = reader.GetString("ispk") == "P",
                                     IsUnique = reader.GetString("isunique") == "U",
                                     IsIdentity = reader.GetString("isidentity") == "I",
-                                    MappedDataType = m.MapFromDBType(ServerType.Informix, dataType, dataLength, dataPrecision, dataScale).ToString(),
+                                    MappedDataType = m.MapFromDBType(ServerType.Informix, dataType, dataLength, dataPrecision, dataScale),
                                 });
                             }
                         }

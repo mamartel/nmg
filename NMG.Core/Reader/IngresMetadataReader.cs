@@ -62,7 +62,7 @@ namespace NMG.Core.Reader
                                         IsNullable = isNullable,
                                         IsPrimaryKey = IsPrimaryKey(owner, table.Name, columnName),
                                         IsForeignKey = IsForeignKey(owner, table.Name, columnName),
-                                        MappedDataType = m.MapFromDBType(ServerType.Ingres, dataType, characterMaxLenth, numericPrecision, numericScale).ToString(),
+                                        MappedDataType = m.MapFromDBType(ServerType.Ingres, dataType, characterMaxLenth, numericPrecision, numericScale),
                                         DataLength = characterMaxLenth,
                                         ConstraintName = GetConstraintName(owner, table.Name, columnName),
                                         DataPrecision = numericPrecision,

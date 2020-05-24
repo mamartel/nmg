@@ -32,6 +32,8 @@ namespace NMG.Core.Reader
                     tableDetailsCommand.CommandText = $"DESCRIBE `{owner}`.`{table}`";
                     using (MySqlDataReader sqlDataReader = tableDetailsCommand.ExecuteReader(CommandBehavior.Default))
                     {
+                        var m = new DataTypeMapper();
+
                         while (await sqlDataReader.ReadAsync())
                         {
                             string columnName = sqlDataReader.GetString(0);
@@ -46,8 +48,8 @@ namespace NMG.Core.Reader
                                     MysqlConstraintType.ForeignKey.ToString(),
                                     StringComparison.CurrentCultureIgnoreCase));
 
-                            var m = new DataTypeMapper();
-
+                            bool isAutoIncrement = sqlDataReader.GetString("extra").Equals("auto_increment", StringComparison.OrdinalIgnoreCase);
+                            
                             columns.Add(new Column
                             {
                                 Name = columnName,
@@ -56,9 +58,9 @@ namespace NMG.Core.Reader
                                 IsPrimaryKey = isPrimaryKey,
                                 //IsPrimaryKey(selectedTableName.Name, columnName)
                                 IsForeignKey = isForeignKey,
+                                IsIdentity = isAutoIncrement,
                                 // IsFK()
-                                MappedDataType =
-                                    m.MapFromDBType(ServerType.MySQL, dataType, null, null, null).ToString(),
+                                MappedDataType = m.MapFromDBType(ServerType.MySQL, dataType, null, null, null),
                                 //DataLength = dataLength
                             });
 

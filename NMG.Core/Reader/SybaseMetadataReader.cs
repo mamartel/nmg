@@ -90,7 +90,7 @@ namespace NMG.Core.Reader
                                         IsNullable = isNullable,
                                         IsPrimaryKey = isPrimaryKey.GetValueOrDefault(),
                                         IsForeignKey = isForeignKey,
-                                        MappedDataType = mappedType.ToString(),
+                                        MappedDataType = mappedType,
                                         DataLength = dataLength,
                                         DataScale = dataScale,
                                         DataPrecision = dataPrecision,

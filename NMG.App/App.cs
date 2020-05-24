@@ -200,6 +200,10 @@ namespace NHibernateMappingGenerator
 
                 generateInFoldersCheckBox.Checked = applicationSettings.GenerateInFolders;
 
+                testAttributeTextBox.Text = applicationSettings.TestMethodAttributeName != String.Empty ? applicationSettings.TestMethodAttributeName : "Test";
+                fluentNHibernateRadioButton.Checked = applicationSettings.PersistenceTestingFramework == PersistenceTestingFramework.FluentNHibernate;
+                nhibernatePersistenceTestingRadioButton.Checked = applicationSettings.PersistenceTestingFramework == PersistenceTestingFramework.NHibernatePersistenceTesting;
+
                 SetCodeControlFormatting(applicationSettings);
             }
             else
@@ -275,6 +279,8 @@ namespace NHibernateMappingGenerator
                 domainCodeFastColoredTextBox.Language = FastColoredTextBoxNS.Language.VB;
             }
 
+            testCodeFastColoredTextBox.Language = FastColoredTextBoxNS.Language.CSharp;
+
             // Map Code Formatting
             if (appSettings.Language == Language.CSharp & appSettings.IsByCode || appSettings.IsFluent || appSettings.IsNhFluent || appSettings.IsCastle || appSettings.IsEntityFramework)
             {
@@ -340,6 +346,8 @@ namespace NHibernateMappingGenerator
             applicationSettings.IncludeHasMany = includeHasManyCheckBox.Checked;
             applicationSettings.IncludeLengthAndScale = includeLengthAndScaleCheckBox.Checked;
             applicationSettings.LastUsedConnection = _currentConnection == null ? (Guid?) null : _currentConnection.Id;
+            applicationSettings.TestMethodAttributeName = testAttributeTextBox.Text;
+            applicationSettings.PersistenceTestingFramework = GetPersistenceTestingFramework();
         }
 
         private void BindData()
@@ -750,10 +758,20 @@ namespace NHibernateMappingGenerator
                                                  NameFkAsForeignTable = appSettings.NameFkAsForeignTable,
                                                  IncludeHasMany = appSettings.IncludeHasMany,
                                                  IncludeLengthAndScale = appSettings.IncludeLengthAndScale,
-                                                 ValidatorStyle = appSettings.ValidationStyle
+                                                 ValidatorStyle = appSettings.ValidationStyle,
+                                                 TestMethodAttributeName = appSettings.TestMethodAttributeName,
+                                                 PersistenceTestingFramework = GetPersistenceTestingFramework()
                                              };
 
             return applicationPreferences;
+        }
+
+        private PersistenceTestingFramework GetPersistenceTestingFramework()
+        {
+            var persistenceTestingFramework = PersistenceTestingFramework.FluentNHibernate;
+            if (nhibernatePersistenceTestingRadioButton.Checked)
+                persistenceTestingFramework = PersistenceTestingFramework.NHibernatePersistenceTesting;
+            return persistenceTestingFramework;
         }
 
         private FieldGenerationConvention GetFieldGenerationConvention()
@@ -888,6 +906,7 @@ namespace NHibernateMappingGenerator
             applicationController.Generate(false);
             mapCodeFastColoredTextBox.Text = applicationController.GeneratedMapCode;
             domainCodeFastColoredTextBox.Text = applicationController.GeneratedDomainCode;
+            testCodeFastColoredTextBox.Text = applicationController.GeneratedTestCode;
         }
 
         private void includeForeignKeysCheckBox_CheckedChanged(object sender, EventArgs e)
