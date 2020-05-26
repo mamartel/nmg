@@ -72,7 +72,7 @@ namespace NMG.Core.Generator
         {
             foreach (var column in Table.Columns.Where(x => !x.IsForeignKey || !applicationPreferences.IncludeForeignKeys).OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase))
             {
-                testMethod.Statements.Add(new CodeSnippetStatement($"{TABS}{TABS}Property(x => x.{column.Name}, {GetTestValue(column)})."));
+                testMethod.Statements.Add(new CodeSnippetStatement($"{TABS}{TABS}CheckProperty(x => x.{column.Name}, {GetTestValue(column)})."));
             }
         }
 
