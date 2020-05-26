@@ -12,24 +12,26 @@ namespace NMG.Core.Generator
     {
         private readonly ApplicationPreferences appPrefs;
 
-        public ByCodeGenerator(ApplicationPreferences appPrefs, Table table) : 
+        public ByCodeGenerator(ApplicationPreferences appPrefs, Table table) :
             base(appPrefs.FolderPath, "Mapping", appPrefs.TableName, appPrefs.NameSpaceMap, appPrefs.AssemblyName, appPrefs.Sequence, table, appPrefs)
         {
             this.appPrefs = appPrefs;
             language = this.appPrefs.Language;
         }
-        
+
         public override void Generate(bool writeToFile = true)
         {
-            var pascalCaseTextFormatter = new PascalCaseTextFormatter {PrefixRemovalList = appPrefs.FieldPrefixRemovalList};
+            var pascalCaseTextFormatter = new PascalCaseTextFormatter { PrefixRemovalList = appPrefs.FieldPrefixRemovalList };
 
-            var className = string.Format("{0}{1}{2}", appPrefs.ClassNamePrefix, pascalCaseTextFormatter.FormatSingular(Table.Name), "Map");
-            var compileUnit = GetCompleteCompileUnit(className);
-            var generateCode = GenerateCode(compileUnit, className);
-            
+            var entityClassName = $"{appPrefs.ClassNamePrefix}{pascalCaseTextFormatter.FormatSingular(Table.Name)}";
+            var mapClassName = $"{entityClassName}Map";
+
+            var compileUnit = GetCompleteCompileUnit(mapClassName, entityClassName);
+            var generateCode = GenerateCode(compileUnit, mapClassName);
+
             if (writeToFile)
             {
-                WriteToFile(generateCode, className);
+                WriteToFile(generateCode, mapClassName);
             }
         }
 
@@ -38,27 +40,26 @@ namespace NMG.Core.Generator
             return generatedContent;
         }
 
-        public CodeCompileUnit GetCompleteCompileUnit(string mapName)
+        private CodeCompileUnit GetCompleteCompileUnit(string mapName, string className)
         {
             var codeGenerationHelper = new CodeGenerationHelper();
             var compileUnit = codeGenerationHelper.GetCodeCompileUnit(nameSpace, mapName);
 
             var newType = compileUnit.Namespaces[0].Types[0];
-            
+
             newType.IsPartial = appPrefs.GeneratePartialClasses;
 
-            var className = Formatter.FormatSingular(Table.Name);
             switch (appPrefs.Language)
             {
                 case Language.CSharp:
-                    newType.BaseTypes.Add(string.Format("ClassMapping<{0}{1}>", appPrefs.ClassNamePrefix, className));
+                    newType.BaseTypes.Add($"ClassMapping<{className}>");
                     break;
                 case Language.VB:
-                    newType.BaseTypes.Add(string.Format("ClassMapping(Of {0}{1})", appPrefs.ClassNamePrefix, className));
+                    newType.BaseTypes.Add($"ClassMapping(Of {className})");
                     break;
             }
 
-            var constructor = new CodeConstructor {Attributes = MemberAttributes.Public};
+            var constructor = new CodeConstructor { Attributes = MemberAttributes.Public };
 
             // Table Name - Only ouput if table is different than the class name.
             if (Table.Name.ToLower() != className.ToLower())
@@ -109,7 +110,7 @@ namespace NMG.Core.Generator
             {
                 constructor.Statements.Add(new CodeSnippetStatement(mapper.Reference(fk, Formatter)));
             }
-            
+
             // Bag 
             if (appPrefs.IncludeHasMany)
             {
@@ -129,7 +130,7 @@ namespace NMG.Core.Generator
 
             return compileUnit;
         }
-        
+
         protected override string AddStandardHeader(string entireContent)
         {
             var builder = new StringBuilder();
