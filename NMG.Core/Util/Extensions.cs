@@ -13,7 +13,7 @@ namespace NMG.Core.Util
             return formattedText;
         }
 
-        public static string GetPreferenceFormattedText(this string text, ApplicationPreferences applicationPreferences, bool pluralize)
+        public static string GetPreferenceFormattedText(this string text, IApplicationSettings applicationPreferences, bool pluralize)
         {
             if (applicationPreferences.FieldNamingConvention.Equals(FieldNamingConvention.SameAsDatabase))
                 return text;
@@ -29,7 +29,7 @@ namespace NMG.Core.Util
                        : formattedText;
         }
 
-        public static string GetPreferenceFormattedText(this string text, ApplicationPreferences applicationPreferences)
+        public static string GetPreferenceFormattedText(this string text, IApplicationSettings applicationPreferences)
         {
             return GetPreferenceFormattedText(text, applicationPreferences, false);
         }

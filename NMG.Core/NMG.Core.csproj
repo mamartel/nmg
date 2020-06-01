@@ -112,7 +112,7 @@
     <Compile Include="Generator\NpgsqlMappingGenerator.cs" />
     <Compile Include="Generator\PersistenceSpecificationTestCodeGenerator.cs" />
     <Compile Include="MetadataFactory.cs" />
-    <Compile Include="ApplicationPreferences.cs" />
+    <Compile Include="IApplicationSettings.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Reader\CUBRIDConstraintType.cs" />
     <Compile Include="Reader\CUBRIDMetadataReader.cs" />

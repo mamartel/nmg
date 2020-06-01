@@ -5,7 +5,7 @@ namespace NMG.Core.Generator
 {
     public class MysqlMappingGenerator : MappingGenerator
     {
-        public MysqlMappingGenerator(ApplicationPreferences applicationPreferences, Table table)
+        public MysqlMappingGenerator(IApplicationSettings applicationPreferences, Table table)
             : base(applicationPreferences, table)
         {
         }

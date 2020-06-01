@@ -13,11 +13,11 @@ namespace NMG.Tests.Generator
         [Test]
         public void ShouldCreateCompleteCompileUnit()
         {
-            var applicationPreferences = new ApplicationPreferences
-                                             {
-                                                 NameSpace = "someNamespace",
-                                                 TableName = "someTableName"
-                                             };
+            //var applicationPreferences = new ApplicationPreferences
+            //                                 {
+            //                                     NameSpace = "someNamespace",
+            //                                     TableName = "someTableName"
+            //                                 };
             //var codeGenerator = new CodeGenerator(applicationPreferences, new ColumnDetails());
             //var codeCompileUnit = codeGenerator.GetCompileUnit();
             //var cSharpCodeProvider = new CSharpCodeProvider();

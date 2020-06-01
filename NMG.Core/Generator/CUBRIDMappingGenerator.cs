@@ -10,7 +10,7 @@ namespace NMG.Core.Generator
     /// </summary>
     public class CUBRIDMappingGenerator : MappingGenerator
     {
-        public CUBRIDMappingGenerator(ApplicationPreferences applicationPreferences, Table table) : base(applicationPreferences, table)
+        public CUBRIDMappingGenerator(IApplicationSettings applicationPreferences, Table table) : base(applicationPreferences, table)
         {
         }
 

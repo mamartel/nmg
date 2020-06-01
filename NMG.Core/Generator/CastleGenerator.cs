@@ -12,7 +12,7 @@ namespace NMG.Core.Generator
 {
     public class CastleGenerator : AbstractGenerator
     {
-        public CastleGenerator(ApplicationPreferences applicationPreferences, Table table) : base(applicationPreferences.FolderPath, "Mapping", applicationPreferences.TableName, applicationPreferences.NameSpaceMap, applicationPreferences.AssemblyName, applicationPreferences.Sequence, table, applicationPreferences)
+        public CastleGenerator(IApplicationSettings applicationPreferences, Table table) : base(applicationPreferences.FolderPath, "Mapping", table.Name, applicationPreferences.NameSpaceMap, applicationPreferences.AssemblyName, applicationPreferences.Sequence, table, applicationPreferences)
         {
             this.applicationPreferences = applicationPreferences;
         }

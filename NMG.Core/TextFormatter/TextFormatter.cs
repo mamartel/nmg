@@ -105,7 +105,7 @@ namespace NMG.Core.TextFormatter
 
     public static class TextFormatterFactory
     {
-        public static ITextFormatter GetTextFormatter(ApplicationPreferences applicationPreferences)
+        public static ITextFormatter GetTextFormatter(IApplicationSettings applicationPreferences)
         {
             ITextFormatter formatter;
             switch(applicationPreferences.FieldNamingConvention)

@@ -9,10 +9,10 @@ namespace NMG.Core.ByCode
 {
     public class DBColumnMapper
     {
-        private readonly ApplicationPreferences _applicationPreferences;
+        private readonly IApplicationSettings _applicationPreferences;
         private readonly Language _language;
 
-        public DBColumnMapper(ApplicationPreferences applicationPreferences)
+        public DBColumnMapper(IApplicationSettings applicationPreferences)
         {
             _applicationPreferences = applicationPreferences;
             _language = applicationPreferences.Language;

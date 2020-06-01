@@ -404,8 +404,8 @@ namespace NHibernateMappingGenerator
                         GenerateAndDisplayCode(table);
 
                         // Display entity name based on formatted table name
-                        var appPreferences = GetApplicationPreferences(table, false, applicationSettings);
-                        var formatter = TextFormatterFactory.GetTextFormatter(appPreferences);
+                        UpdateApplicationPreferences(false);
+                        var formatter = TextFormatterFactory.GetTextFormatter(applicationSettings);
                         entityNameTextBox.Text = formatter.FormatText(table.Name);
                     }
                 }
@@ -677,8 +677,7 @@ namespace NHibernateMappingGenerator
         
         private void Generate(Table table, bool generateAll, ApplicationSettings appSettings)
         {
-            var applicationPreferences = GetApplicationPreferences(table, generateAll, appSettings);
-            new ApplicationController(applicationPreferences, table).Generate();
+            new ApplicationController(appSettings, table).Generate();
         }
 
         private void prefixCheckChanged(object sender, EventArgs e)
@@ -686,7 +685,7 @@ namespace NHibernateMappingGenerator
             prefixLabel.Visible = prefixTextBox.Visible = prefixRadioButton.Checked;
         }
 
-        private ApplicationPreferences GetApplicationPreferences(Table tableName, bool all, ApplicationSettings appSettings)
+        private void UpdateApplicationPreferences(bool all)
         {
             string sequence = string.Empty;
             object sequenceName = null;
@@ -710,7 +709,7 @@ namespace NHibernateMappingGenerator
                 Directory.CreateDirectory(folderPath);
             }
             var domainFolderPath = AddSlashToFolderPath(domainFolderTextBox.Text);
-            if (appSettings.GenerateInFolders)
+            if (applicationSettings.GenerateInFolders)
             {
                 Directory.CreateDirectory(folderPath + "Contract");
                 Directory.CreateDirectory(folderPath + "Domain");
@@ -726,44 +725,21 @@ namespace NHibernateMappingGenerator
                 }
             }
 
-            var applicationPreferences = new ApplicationPreferences
-                                             {
-                                                 ServerType = _currentConnection.Type,
-                                                 FolderPath = folderPath,
-                                                 DomainFolderPath = domainFolderPath,
-                                                 TableName = tableName.Name,
-                                                 NameSpaceMap = namespaceMapTextBox.Text,
-                                                 NameSpace = nameSpaceTextBox.Text,
-                                                 AssemblyName = assemblyNameTextBox.Text,
-                                                 Sequence = sequence,
-                                                 Language = LanguageSelected,
-                                                 FieldNamingConvention = GetFieldNamingConvention(),
-                                                 FieldGenerationConvention = GetFieldGenerationConvention(),
-                                                 Prefix = prefixTextBox.Text,
-                                                 IsFluent = IsFluent,
-                                                 IsEntityFramework = IsEntityFramework,
-                                                 IsCastle = IsCastle,
-                                                 GeneratePartialClasses = appSettings.GeneratePartialClasses,
-                                                 GenerateWcfDataContract = appSettings.GenerateWcfContracts,
-                                                 ConnectionString = _currentConnection.ConnectionString,
-                                                 ForeignEntityCollectionType = appSettings.ForeignEntityCollectionType,
-                                                 InheritenceAndInterfaces = appSettings.InheritenceAndInterfaces,
-                                                 GenerateInFolders = appSettings.GenerateInFolders,
-                                                 ClassNamePrefix = appSettings.ClassNamePrefix,
-                                                 EnableInflections = appSettings.EnableInflections,
-                                                 IsByCode = appSettings.IsByCode,
-                                                 UseLazy = appSettings.UseLazy,
-                                                 FieldPrefixRemovalList = appSettings.FieldPrefixRemovalList,
-                                                 IncludeForeignKeys = appSettings.IncludeForeignKeys,
-                                                 NameFkAsForeignTable = appSettings.NameFkAsForeignTable,
-                                                 IncludeHasMany = appSettings.IncludeHasMany,
-                                                 IncludeLengthAndScale = appSettings.IncludeLengthAndScale,
-                                                 ValidatorStyle = appSettings.ValidationStyle,
-                                                 TestMethodAttributeName = appSettings.TestMethodAttributeName,
-                                                 PersistenceTestingFramework = GetPersistenceTestingFramework()
-                                             };
-
-            return applicationPreferences;
+            applicationSettings.ServerType = _currentConnection.Type;
+            applicationSettings.FolderPath = folderPath;
+            applicationSettings.DomainFolderPath = domainFolderPath;
+            applicationSettings.NameSpaceMap = namespaceMapTextBox.Text;
+            applicationSettings.NameSpace = nameSpaceTextBox.Text;
+            applicationSettings.AssemblyName = assemblyNameTextBox.Text;
+            applicationSettings.Sequence = sequence;
+            applicationSettings.Language = LanguageSelected;
+            applicationSettings.FieldNamingConvention = GetFieldNamingConvention();
+            applicationSettings.FieldGenerationConvention = GetFieldGenerationConvention();
+            applicationSettings.Prefix = prefixTextBox.Text;
+            applicationSettings.IsFluent = IsFluent;
+            applicationSettings.IsEntityFramework = IsEntityFramework;
+            applicationSettings.IsCastle = IsCastle;
+            applicationSettings.PersistenceTestingFramework = GetPersistenceTestingFramework();
         }
 
         private PersistenceTestingFramework GetPersistenceTestingFramework()
@@ -901,8 +877,8 @@ namespace NHibernateMappingGenerator
             table.ForeignKeys = metadataReader.DetermineForeignKeyReferences(table);
 
             // Show map and domain code preview
-            ApplicationPreferences applicationPreferences = GetApplicationPreferences(table, false, applicationSettings);
-            var applicationController = new ApplicationController(applicationPreferences, table);
+            UpdateApplicationPreferences(false);
+            var applicationController = new ApplicationController(applicationSettings, table);
             applicationController.Generate(false);
             mapCodeFastColoredTextBox.Text = applicationController.GeneratedMapCode;
             domainCodeFastColoredTextBox.Text = applicationController.GeneratedDomainCode;

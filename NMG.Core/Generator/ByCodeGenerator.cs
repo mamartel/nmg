@@ -10,10 +10,10 @@ namespace NMG.Core.Generator
 {
     public class ByCodeGenerator : AbstractCodeGenerator
     {
-        private readonly ApplicationPreferences appPrefs;
+        private readonly IApplicationSettings appPrefs;
 
-        public ByCodeGenerator(ApplicationPreferences appPrefs, Table table) :
-            base(appPrefs.FolderPath, "Mapping", appPrefs.TableName, appPrefs.NameSpaceMap, appPrefs.AssemblyName, appPrefs.Sequence, table, appPrefs)
+        public ByCodeGenerator(IApplicationSettings appPrefs, Table table) :
+            base(appPrefs.FolderPath, "Mapping", table.Name, appPrefs.NameSpaceMap, appPrefs.AssemblyName, appPrefs.Sequence, table, appPrefs)
         {
             this.appPrefs = appPrefs;
             language = this.appPrefs.Language;

@@ -9,8 +9,8 @@ namespace NMG.Core.Generator
 {
     public class PersistenceSpecificationTestCodeGenerator : AbstractCodeGenerator
     {
-        public PersistenceSpecificationTestCodeGenerator(ApplicationPreferences appPrefs, Table table) :
-            base(appPrefs.FolderPath, "Testing", appPrefs.TableName, appPrefs.NameSpaceMap, appPrefs.AssemblyName, appPrefs.Sequence, table, appPrefs)
+        public PersistenceSpecificationTestCodeGenerator(IApplicationSettings appPrefs, Table table) :
+            base(appPrefs.FolderPath, "Testing", table.Name, appPrefs.NameSpaceMap, appPrefs.AssemblyName, appPrefs.Sequence, table, appPrefs)
         {
 
         }

@@ -6,7 +6,7 @@ namespace NHibernateMappingGenerator
 {
     public class ApplicationController
     {
-        private readonly ApplicationPreferences applicationPreferences;
+        private readonly IApplicationSettings applicationPreferences;
         private readonly CastleGenerator castleGenerator;
         private readonly CodeGenerator codeGenerator;
         private readonly FluentGenerator fluentGenerator;
@@ -16,7 +16,7 @@ namespace NHibernateMappingGenerator
         private readonly EntityFrameworkGenerator entityFrameworkGenerator;
         private readonly PersistenceSpecificationTestCodeGenerator testGenerator;
 
-        public ApplicationController(ApplicationPreferences applicationPreferences, Table table)
+        public ApplicationController(IApplicationSettings applicationPreferences, Table table)
         {
             this.applicationPreferences = applicationPreferences;
             codeGenerator = new CodeGenerator(applicationPreferences, table);

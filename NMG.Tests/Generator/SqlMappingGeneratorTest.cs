@@ -14,10 +14,9 @@ namespace NMG.Tests.Generator
         public void ShouldGenerateMappingForSqlServerTable()
         {
             const string generatedXML = "<?xml version=\"1.0\"?><hibernate-mapping assembly=\"myAssemblyName\" namespace=\"myNameSpace\" xmlns=\"urn:nhibernate-mapping-2.2\"><class name=\"Customer\" table=\"Customer\" lazy=\"true\" xmlns=\"\"><id name=\"Id\" column=\"Id\" /></class></hibernate-mapping>";
-            var preferences = new ApplicationPreferences
+            var preferences = new TestApplicationSettings()
                                   {
                                       FolderPath = "\\",
-                                      TableName = "Customer",
                                       AssemblyName = "myAssemblyName",
                                       NameSpace = "myNameSpace",
                                       Sequence = "mySequenceNumber",
@@ -25,7 +24,7 @@ namespace NMG.Tests.Generator
             var pkColumn = new Column { Name = "Id", IsPrimaryKey = true, DataType = "Int" };
             var columns = new List<Column> {pkColumn};
             var primaryKey = new PrimaryKey {Columns = columns};
-            var generator = new SqlMappingGenerator(preferences, new Table {PrimaryKey = primaryKey, Columns = columns});
+            var generator = new SqlMappingGenerator(preferences, new Table {Name = "Customer", PrimaryKey = primaryKey, Columns = columns});
             XmlDocument document = generator.CreateMappingDocument();
             Assert.AreEqual(generatedXML, document.InnerXml);
         }

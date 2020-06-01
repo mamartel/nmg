@@ -14,11 +14,11 @@ namespace NMG.Core.Generator
 {
     public class CodeGenerator : AbstractGenerator
     {
-        private readonly ApplicationPreferences appPrefs;
+        private readonly IApplicationSettings appPrefs;
         private readonly Language language;
 
-        public CodeGenerator(ApplicationPreferences appPrefs, Table table)
-            : base(appPrefs.DomainFolderPath, "Domain", appPrefs.TableName, appPrefs.NameSpace, appPrefs.AssemblyName, appPrefs.Sequence, table, appPrefs)
+        public CodeGenerator(IApplicationSettings appPrefs, Table table)
+            : base(appPrefs.DomainFolderPath, "Domain", table.Name, appPrefs.NameSpace, appPrefs.AssemblyName, appPrefs.Sequence, table, appPrefs)
         {
             this.appPrefs = appPrefs;
             language = appPrefs.Language;

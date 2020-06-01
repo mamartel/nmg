@@ -17,9 +17,9 @@ namespace NMG.Core.Generator
         protected string tableName;
 		internal const string TABS = "\t\t\t";
     	protected string ClassNamePrefix { get; set;}
-        protected ApplicationPreferences applicationPreferences;
+        protected IApplicationSettings applicationPreferences;
 
-        protected AbstractGenerator(string filePath, string specificFolder, string tableName, string nameSpace, string assemblyName, string sequenceName, Table table, ApplicationPreferences appPrefs)
+        protected AbstractGenerator(string filePath, string specificFolder, string tableName, string nameSpace, string assemblyName, string sequenceName, Table table, IApplicationSettings appPrefs)
         {
             this.filePath = filePath;
             if(appPrefs.GenerateInFolders)

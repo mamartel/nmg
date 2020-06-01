@@ -11,9 +11,9 @@ namespace NMG.Core.Generator
 {
     public class FluentGenerator : AbstractCodeGenerator
     {
-        private readonly ApplicationPreferences appPrefs;
+        private readonly IApplicationSettings appPrefs;
 
-        public FluentGenerator(ApplicationPreferences appPrefs, Table table) : base(appPrefs.FolderPath, "Mapping", appPrefs.TableName, appPrefs.NameSpaceMap, appPrefs.AssemblyName, appPrefs.Sequence, table, appPrefs)
+        public FluentGenerator(IApplicationSettings appPrefs, Table table) : base(appPrefs.FolderPath, "Mapping", table.Name, appPrefs.NameSpaceMap, appPrefs.AssemblyName, appPrefs.Sequence, table, appPrefs)
         {
             this.appPrefs = appPrefs;
             language = this.appPrefs.Language;
@@ -121,7 +121,7 @@ namespace NMG.Core.Generator
             return base.AddStandardHeader(entireContent);
         }
 
-        private static CodeSnippetStatement GetIdMapCodeSnippetStatement(ApplicationPreferences appPrefs, Table table, string pkColumnName, string propertyName, string pkColumnType, ITextFormatter formatter)
+        private static CodeSnippetStatement GetIdMapCodeSnippetStatement(IApplicationSettings appPrefs, Table table, string pkColumnName, string propertyName, string pkColumnType, ITextFormatter formatter)
         {
             var dataTypeMapper = new DataTypeMapper();
             bool isPkTypeIntegral = (dataTypeMapper.MapFromDBType(appPrefs.ServerType, pkColumnType, null, null, null)).IsTypeIntegral();

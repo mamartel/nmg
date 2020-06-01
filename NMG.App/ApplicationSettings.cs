@@ -8,11 +8,16 @@ using NMG.Core.Domain;
 
 namespace NHibernateMappingGenerator
 {
-    public class ApplicationSettings
+    public class ApplicationSettings : IApplicationSettings
     {
         public ApplicationSettings()
         {
             Connections = new List<Connection>();
+            FieldNamingConvention = FieldNamingConvention.SameAsDatabase;
+            FieldGenerationConvention = FieldGenerationConvention.Field;
+            Prefix = String.Empty;
+            TestMethodAttributeName = "Test";
+            TestMethodAttributeName = "Test";
         }
 
         public List<Connection> Connections { get; set; }
@@ -31,8 +36,7 @@ namespace NHibernateMappingGenerator
         public bool IsEntityFramework { get; set; }
 
         public bool IsAutoProperty { get; set; }
-
-        public CodeGenerationOptions CodeGenerationOptions { get; set; }
+        public string Sequence { get; set; }
 
         public FieldGenerationConvention FieldGenerationConvention { get; set; }
 
@@ -81,7 +85,10 @@ namespace NHibernateMappingGenerator
         public string TestMethodAttributeName { get; set; }
 
         public PersistenceTestingFramework PersistenceTestingFramework { get; set; }
-
+        public ServerType ServerType { get; set; }
+        public ValidationStyle ValidatorStyle { get; set; }
+        public bool GenerateWcfDataContract { get; set; }
+        
         public void Save()
         {
             var streamWriter = new StreamWriter(Application.LocalUserAppDataPath + @"\nmg.config", false);

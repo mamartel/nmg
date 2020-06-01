@@ -5,7 +5,7 @@ namespace NMG.Core.Generator
 {
     public class NpgsqlMappingGenerator : MappingGenerator
     {
-        public NpgsqlMappingGenerator(ApplicationPreferences applicationPreferences, Table table)
+        public NpgsqlMappingGenerator(IApplicationSettings applicationPreferences, Table table)
             : base(applicationPreferences, table)
         {
         }

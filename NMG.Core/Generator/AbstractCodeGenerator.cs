@@ -15,7 +15,7 @@ namespace NMG.Core.Generator
 
         protected AbstractCodeGenerator(
             string filePath, string additionalFolder, string tableName, string nameSpace, string assemblyName, string sequenceName,
-            Table table, ApplicationPreferences appPrefs)
+            Table table, IApplicationSettings appPrefs)
             : base(filePath, additionalFolder, tableName, nameSpace, assemblyName, sequenceName, table, appPrefs)
         {
         }
