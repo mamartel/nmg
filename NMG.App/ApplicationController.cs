@@ -53,7 +53,7 @@ namespace NHibernateMappingGenerator
                 fluentGenerator.Generate(writeToFile);
                 GeneratedMapCode = fluentGenerator.GeneratedCode;
             }
-            if (applicationPreferences.IsEntityFramework)
+            else if (applicationPreferences.IsEntityFramework)
             {
                 entityFrameworkGenerator.Generate(writeToFile);
                 GeneratedMapCode = entityFrameworkGenerator.GeneratedCode;
