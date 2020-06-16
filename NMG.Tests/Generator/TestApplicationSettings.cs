@@ -39,5 +39,6 @@ namespace NMG.Tests.Generator
         public ServerType ServerType { get; set; }
         public ValidationStyle ValidatorStyle { get; set; }
         public bool GenerateWcfDataContract { get; set; }
+        public bool GenerateColumnNameMapping { get; set; }
     }
 }

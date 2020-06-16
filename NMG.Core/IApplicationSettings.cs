@@ -38,5 +38,6 @@ namespace NMG.Core
         ServerType ServerType { get; }
         ValidationStyle ValidatorStyle { get; }
         bool GenerateWcfDataContract { get; }
+        bool GenerateColumnNameMapping { get; }
     }
 }

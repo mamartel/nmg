@@ -103,6 +103,7 @@ namespace NHibernateMappingGenerator
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.generateInFoldersCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.generateColumnNameMappingCheckBox = new System.Windows.Forms.CheckBox();
             this.comboBoxForeignCollection = new System.Windows.Forms.ComboBox();
             this.wcfDataContractCheckBox = new System.Windows.Forms.CheckBox();
             this.labelForeignEntity = new System.Windows.Forms.Label();
@@ -885,6 +886,7 @@ namespace NHibernateMappingGenerator
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.generateColumnNameMappingCheckBox);
             this.groupBox8.Controls.Add(this.comboBoxForeignCollection);
             this.groupBox8.Controls.Add(this.wcfDataContractCheckBox);
             this.groupBox8.Controls.Add(this.labelForeignEntity);
@@ -899,6 +901,16 @@ namespace NHibernateMappingGenerator
             this.groupBox8.TabIndex = 6;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Mapping Options";
+            // 
+            // generateColumnNameMappingCheckBox
+            // 
+            this.generateColumnNameMappingCheckBox.AutoSize = true;
+            this.generateColumnNameMappingCheckBox.Location = new System.Drawing.Point(15, 178);
+            this.generateColumnNameMappingCheckBox.Name = "generateColumnNameMappingCheckBox";
+            this.generateColumnNameMappingCheckBox.Size = new System.Drawing.Size(183, 17);
+            this.generateColumnNameMappingCheckBox.TabIndex = 21;
+            this.generateColumnNameMappingCheckBox.Text = "Generate Column Name Mapping";
+            this.generateColumnNameMappingCheckBox.UseVisualStyleBackColor = true;
             // 
             // comboBoxForeignCollection
             // 
@@ -1508,6 +1520,7 @@ namespace NHibernateMappingGenerator
         private Label label10;
         private RadioButton nhibernatePersistenceTestingRadioButton;
         private RadioButton fluentNHibernateRadioButton;
+        private CheckBox generateColumnNameMappingCheckBox;
     }
 }
 

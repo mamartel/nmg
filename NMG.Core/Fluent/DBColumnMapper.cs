@@ -6,12 +6,23 @@ namespace NMG.Core.Fluent
 {
     public class DBColumnMapper
     {
+        private readonly IApplicationSettings applicationSettings;
+
+        public DBColumnMapper(IApplicationSettings applicationSettings)
+        {
+            this.applicationSettings = applicationSettings;
+        }
+
         public string Map(Column column, string fieldName, ITextFormatter Formatter, bool includeLengthAndScale = true)
         {
             var mappedStrBuilder = new StringBuilder(string.Format("Map(x => x.{0})", fieldName));
-            mappedStrBuilder.Append(Constants.Dot);
-            mappedStrBuilder.Append("Column(\"" + column.Name + "\")");
-
+            
+            if (applicationSettings.GenerateColumnNameMapping)
+            {
+                mappedStrBuilder.Append(Constants.Dot);
+                mappedStrBuilder.Append("Column(\"" + column.Name + "\")");    
+            }
+            
             if (!column.IsNullable)
             {
                 mappedStrBuilder.Append(Constants.Dot);

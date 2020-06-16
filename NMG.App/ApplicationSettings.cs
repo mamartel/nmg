@@ -17,7 +17,6 @@ namespace NHibernateMappingGenerator
             FieldGenerationConvention = FieldGenerationConvention.Field;
             Prefix = String.Empty;
             TestMethodAttributeName = "Test";
-            TestMethodAttributeName = "Test";
         }
 
         public List<Connection> Connections { get; set; }
@@ -88,7 +87,8 @@ namespace NHibernateMappingGenerator
         public ServerType ServerType { get; set; }
         public ValidationStyle ValidatorStyle { get; set; }
         public bool GenerateWcfDataContract { get; set; }
-        
+        public bool GenerateColumnNameMapping { get; set; }
+
         public void Save()
         {
             var streamWriter = new StreamWriter(Application.LocalUserAppDataPath + @"\nmg.config", false);

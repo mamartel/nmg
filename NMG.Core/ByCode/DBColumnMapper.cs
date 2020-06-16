@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+
 using NMG.Core.Domain;
 using NMG.Core.TextFormatter;
-using System.Text;
 
 namespace NMG.Core.ByCode
 {
@@ -32,7 +33,10 @@ namespace NMG.Core.ByCode
                     builder.AppendFormat("Id(x => x.{0}, map => ", formatter.FormatText(column.Name));
                     builder.AppendLine();
                     builder.AppendLine("\t\t\t\t{");
-                    builder.AppendLine("\t\t\t\t\tmap.Column(\"" + column.Name + "\");");
+                    if (_applicationPreferences.GenerateColumnNameMapping)
+                    {
+                        builder.AppendLine("\t\t\t\t\tmap.Column(\"" + column.Name + "\");");    
+                    }
                     builder.AppendLine("\t\t\t\t\tmap.Generator(Generators.Sequence, g => g.Params(new { sequence = \"" + sequenceName + "\" }));");
                     builder.Append("\t\t\t\t});");
                     break;
@@ -53,10 +57,11 @@ namespace NMG.Core.ByCode
             var mapList = new List<string>();
             var propertyName = formatter.FormatText(column.Name);
 
-            if (column.Name.ToLower() != propertyName.ToLower())
+            if (_applicationPreferences.GenerateColumnNameMapping)
             {
-                mapList.Add("map.Column(\"" + column.Name + "\")");
+                mapList.Add("map.Column(\"" + column.Name + "\")");    
             }
+            
             mapList.Add(column.IsIdentity ? "map.Generator(Generators.Identity)" : "map.Generator(Generators.Assigned)");
 
             // Outer property definition
@@ -106,10 +111,11 @@ namespace NMG.Core.ByCode
             var mapList = new List<string>();
 
             // Column
-            if (column.Name.ToLower() != propertyName.ToLower())
+            if (_applicationPreferences.GenerateColumnNameMapping)
             {
-                mapList.Add("map.Column(\"" + column.Name + "\")");
+                mapList.Add($"map.Column(\"{column.Name}\")");
             }
+
             // Not Null
             if (!column.IsNullable)
             {
@@ -164,9 +170,6 @@ namespace NMG.Core.ByCode
                             break;
                         case 1:
                             outerStrBuilder.AppendFormat("{0}(x => x.{1}, map => {2});", byCodeProperty, propertyName, mapList.First());
-                            break;
-                        case 2:
-                            outerStrBuilder.AppendFormat("{0}(x => x.{1}, map => {{ {2}; }});", byCodeProperty, propertyName, mapList.Aggregate((c, s) => string.Format("{0}; {1}", c, s)));
                             break;
                         default:
                             outerStrBuilder.AppendFormat("{0}(x => x.{1}, map => \r\n\t\t\t{{\r\n\t\t\t\t{2};\r\n\t\t\t}});", byCodeProperty,propertyName, mapList.Aggregate((c, s) => string.Format("{0};\r\n\t\t\t\t{1}", c, s)));

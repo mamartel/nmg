@@ -203,6 +203,7 @@ namespace NHibernateMappingGenerator
                 testAttributeTextBox.Text = applicationSettings.TestMethodAttributeName != String.Empty ? applicationSettings.TestMethodAttributeName : "Test";
                 fluentNHibernateRadioButton.Checked = applicationSettings.PersistenceTestingFramework == PersistenceTestingFramework.FluentNHibernate;
                 nhibernatePersistenceTestingRadioButton.Checked = applicationSettings.PersistenceTestingFramework == PersistenceTestingFramework.NHibernatePersistenceTesting;
+                generateColumnNameMappingCheckBox.Checked = applicationSettings.GenerateColumnNameMapping;
 
                 SetCodeControlFormatting(applicationSettings);
             }
@@ -348,6 +349,7 @@ namespace NHibernateMappingGenerator
             applicationSettings.LastUsedConnection = _currentConnection == null ? (Guid?) null : _currentConnection.Id;
             applicationSettings.TestMethodAttributeName = testAttributeTextBox.Text;
             applicationSettings.PersistenceTestingFramework = GetPersistenceTestingFramework();
+            applicationSettings.GenerateColumnNameMapping = generateColumnNameMappingCheckBox.Checked;
         }
 
         private void BindData()

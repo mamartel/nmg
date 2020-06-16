@@ -89,11 +89,12 @@ namespace NMG.Core.Generator
                 constructor.Statements.Add(new CodeSnippetStatement(codeSnippet));
             }
 
+            var columnMapper = new DBColumnMapper(appPrefs);
             foreach (var column in Table.Columns.Where(x => !x.IsPrimaryKey && (!x.IsForeignKey || !appPrefs.IncludeForeignKeys)))
             {
                 var propertyName = Formatter.FormatText(column.Name);
                 var fieldName = FixPropertyWithSameClassName(propertyName, Table.Name);
-                var columnMapping = new DBColumnMapper().Map(column, fieldName, Formatter, appPrefs.IncludeLengthAndScale);
+                var columnMapping = columnMapper.Map(column, fieldName, Formatter, appPrefs.IncludeLengthAndScale);
                 constructor.Statements.Add(new CodeSnippetStatement(TABS + columnMapping));
             }
 
