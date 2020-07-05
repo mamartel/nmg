@@ -14,9 +14,13 @@ namespace NHibernateMappingGenerator
         {
             Connections = new List<Connection>();
             FieldNamingConvention = FieldNamingConvention.SameAsDatabase;
-            FieldGenerationConvention = FieldGenerationConvention.Field;
+            FieldGenerationConvention = FieldGenerationConvention.AutoProperty;
             Prefix = String.Empty;
             TestMethodAttributeName = "Test";
+            BaseClassProvidesIdProperty = true;
+            PersistenceTestingFramework = PersistenceTestingFramework.FluentNHibernate;
+            IsByCode = true;
+            InheritenceAndInterfaces = "Entity";
         }
 
         public List<Connection> Connections { get; set; }
