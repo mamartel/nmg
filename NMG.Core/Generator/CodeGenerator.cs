@@ -35,7 +35,8 @@ namespace NMG.Core.Generator
             if (writeToFile)
             {
                 WriteToFile(compileUnit, className);
-            } else
+            }
+            else
             {
                 // Output to property
                 GeneratedCode = WriteToString(compileUnit, GetCodeDomProvider());
@@ -88,12 +89,13 @@ namespace NMG.Core.Generator
             if (appPrefs.IncludeHasMany)
                 foreach (var hasMany in Table.HasManyRelationships)
                 {
-                
+
                     if (appPrefs.Language == Language.CSharp)
                     {
                         newType.Members.Add(codeGenerationHelper.CreateAutoProperty(string.Format("{0}<{1}{2}>", appPrefs.ForeignEntityCollectionType, appPrefs.ClassNamePrefix, pascalCaseTextFormatter.FormatSingular(hasMany.Reference)), Formatter.FormatPlural(hasMany.Reference), appPrefs.UseLazy));
                         constructorStatements.Add(new CodeSnippetStatement(string.Format(TABS + "{0} = new {1}<{2}{3}>();", Formatter.FormatPlural(hasMany.Reference), codeGenerationHelper.InstatiationObject(appPrefs.ForeignEntityCollectionType), appPrefs.ClassNamePrefix, pascalCaseTextFormatter.FormatSingular(hasMany.Reference))));
-                    } else if (appPrefs.Language == Language.VB)
+                    }
+                    else if (appPrefs.Language == Language.VB)
                     {
                         newType.Members.Add(codeGenerationHelper.CreateAutoProperty(string.Format("{0}(Of {1}{2})", appPrefs.ForeignEntityCollectionType, appPrefs.ClassNamePrefix, pascalCaseTextFormatter.FormatSingular(hasMany.Reference)), Formatter.FormatPlural(hasMany.Reference), appPrefs.UseLazy));
                         constructorStatements.Add(new CodeSnippetStatement(string.Format(TABS + "{0} = New {1}(Of {2}{3})()", Formatter.FormatPlural(hasMany.Reference), codeGenerationHelper.InstatiationObject(appPrefs.ForeignEntityCollectionType), appPrefs.ClassNamePrefix, pascalCaseTextFormatter.FormatSingular(hasMany.Reference))));
@@ -125,7 +127,7 @@ namespace NMG.Core.Generator
         private void CreateFields(CodeGenerationHelper codeGenerationHelper, DataTypeMapper mapper,
                                   CodeTypeDeclaration newType)
         {
-            if (Table.PrimaryKey != null)
+            if (Table.PrimaryKey != null && (Table.PrimaryKey.Columns.Count > 1 || !appPrefs.BaseClassProvidesIdProperty))
             {
                 foreach (var pk in Table.PrimaryKey.Columns)
                 {
@@ -166,16 +168,15 @@ namespace NMG.Core.Generator
         private void CreateFullProperties(CodeGenerationHelper codeGenerationHelper, DataTypeMapper mapper, CodeTypeDeclaration newType)
         {
             var camelCaseFormatter = new CamelCaseTextFormatter();
-            if (Table.PrimaryKey != null)
+            if (Table.PrimaryKey != null && (Table.PrimaryKey.Columns.Count > 1 || !appPrefs.BaseClassProvidesIdProperty))
             {
-                
                 foreach (var pk in Table.PrimaryKey.Columns)
                 {
                     if (pk.IsForeignKey && appPrefs.IncludeForeignKeys)
                     {
                         newType.Members.Add(codeGenerationHelper.CreateField(Formatter.FormatSingular(pk.ForeignKeyTableName), "_" + camelCaseFormatter.FormatSingular(pk.ForeignKeyTableName)));
                         newType.Members.Add(codeGenerationHelper.CreateProperty(Formatter.FormatSingular(pk.ForeignKeyTableName), Formatter.FormatSingular(pk.ForeignKeyTableName), appPrefs.UseLazy));
-                    } 
+                    }
                     else
                     {
                         var mapFromDbType = mapper.MapFromDBType(appPrefs.ServerType, pk.DataType, pk.DataLength, pk.DataPrecision, pk.DataScale);
@@ -248,16 +249,21 @@ namespace NMG.Core.Generator
 
         private void CreateAutoProperties(CodeGenerationHelper codeGenerationHelper, DataTypeMapper mapper, CodeTypeDeclaration newType)
         {
-            if (Table.PrimaryKey != null)
+            if (Table.PrimaryKey != null && (Table.PrimaryKey.Columns.Count > 1 || !appPrefs.BaseClassProvidesIdProperty))
             {
                 foreach (var pk in Table.PrimaryKey.Columns)
                 {
+                    if (Table.PrimaryKey.Columns.Count == 1 && appPrefs.BaseClassProvidesIdProperty)
+                    {
+                        continue;
+                    }
+
                     if (pk.IsForeignKey && appPrefs.IncludeForeignKeys)
                     {
                         newType.Members.Add(codeGenerationHelper.CreateAutoProperty(Formatter.FormatSingular(pk.ForeignKeyTableName),
                                                                                     Formatter.FormatSingular(pk.ForeignKeyTableName),
                                                                                     appPrefs.UseLazy));
-                    } 
+                    }
                     else
                     {
                         var mapFromDbType = mapper.MapFromDBType(this.appPrefs.ServerType, pk.DataType, pk.DataLength,
@@ -314,7 +320,8 @@ namespace NMG.Core.Generator
             if (columns.Count == 0)
                 return null;
 
-            var method = new CodeMemberMethod {
+            var method = new CodeMemberMethod
+            {
                 Name = "Equals",
                 ReturnType = new CodeTypeReference(typeof(bool)),
                 Attributes = MemberAttributes.Public | MemberAttributes.Override,
@@ -345,7 +352,8 @@ namespace NMG.Core.Generator
                 method.Statements.Add(new CodeSnippetStatement("\t\t\t\treturn true;"));
                 method.Statements.Add(new CodeSnippetStatement(string.Empty));
                 method.Statements.Add(new CodeSnippetStatement("\t\t\treturn false;"));
-            } else if (appPrefs.Language == Language.VB)
+            }
+            else if (appPrefs.Language == Language.VB)
             {
                 method.Statements.Add(new CodeSnippetStatement("\t\t\tIf obj Is Nothing Then Return False"));
                 method.Statements.Add(new CodeSnippetStatement(string.Format("\t\t\tDim t = TryCast(obj, {0})", className)));
@@ -373,7 +381,8 @@ namespace NMG.Core.Generator
             if (columns.Count == 0)
                 return null;
 
-            var method = new CodeMemberMethod {
+            var method = new CodeMemberMethod
+            {
                 Name = "GetHashCode",
                 ReturnType = new CodeTypeReference(typeof(int)),
                 Attributes = MemberAttributes.Public | MemberAttributes.Override,
@@ -392,7 +401,8 @@ namespace NMG.Core.Generator
 
                 method.Statements.Add(new CodeSnippetStatement(string.Empty));
                 method.Statements.Add(new CodeSnippetStatement("\t\t\treturn hash;"));
-            } else if (appPrefs.Language == Language.VB)
+            }
+            else if (appPrefs.Language == Language.VB)
             {
                 // Create the if statement to compare if the obj equals another.
                 method.Statements.Add(new CodeSnippetStatement("\t\t\tDim hash As Integer = 13"));
@@ -463,7 +473,8 @@ namespace NMG.Core.Generator
                 builder.AppendLine("            }");
                 builder.Append("        }");
                 entireContent = entireContent.Replace(builder.ToString(), "{ get; set; }");
-            } else if (appPrefs.Language == Language.VB)
+            }
+            else if (appPrefs.Language == Language.VB)
             {
                 const string blah = @"
             Get
@@ -491,7 +502,8 @@ namespace NMG.Core.Generator
                 entireContent = entireContent.Replace("System.Nullable<System.DateTime>", "DateTime?");
                 //Just remove the "System." from DateTime type. (we already have the "using System;" statement)
                 entireContent = entireContent.Replace("System.DateTime", "DateTime");
-            } else if (appPrefs.Language == Language.VB)
+            }
+            else if (appPrefs.Language == Language.VB)
             {
                 entireContent = entireContent.Replace("System.Nullable(Of Boolean)", "Boolean?");
                 entireContent = entireContent.Replace("System.Nullable(Of Integer)", "Integer?");
@@ -508,14 +520,14 @@ namespace NMG.Core.Generator
 
         private string AddStandardHeader(string entireContent)
         {
-            var scopeStatements = new List<string> {"System", "System.Text", "System.Collections.Generic"};
+            var scopeStatements = new List<string> { "System", "System.Text", "System.Collections.Generic" };
 
             if (appPrefs.ValidatorStyle == ValidationStyle.Microsoft)
             {
                 scopeStatements.Add("System.ComponentModel");
                 scopeStatements.Add("System.ComponentModel.DataAnnotations");
             }
-            
+
             if (appPrefs.ValidatorStyle == ValidationStyle.Nhibernate)
             {
                 scopeStatements.Add("NHibernate.Validator.Constraints");
@@ -531,7 +543,8 @@ namespace NMG.Core.Generator
                 if (appPrefs.Language == Language.CSharp)
                 {
                     builder.AppendLine(string.Format("using {0};", statement));
-                } else if (appPrefs.Language == Language.VB)
+                }
+                else if (appPrefs.Language == Language.VB)
                 {
                     builder.AppendLine(string.Format("Imports {0}", statement));
                 }

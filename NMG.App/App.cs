@@ -204,6 +204,7 @@ namespace NHibernateMappingGenerator
                 fluentNHibernateRadioButton.Checked = applicationSettings.PersistenceTestingFramework == PersistenceTestingFramework.FluentNHibernate;
                 nhibernatePersistenceTestingRadioButton.Checked = applicationSettings.PersistenceTestingFramework == PersistenceTestingFramework.NHibernatePersistenceTesting;
                 generateColumnNameMappingCheckBox.Checked = applicationSettings.GenerateColumnNameMapping;
+                baseClassProvidesIdPropertyCheckBox.Checked = applicationSettings.BaseClassProvidesIdProperty;
 
                 SetCodeControlFormatting(applicationSettings);
             }
@@ -350,6 +351,7 @@ namespace NHibernateMappingGenerator
             applicationSettings.TestMethodAttributeName = testAttributeTextBox.Text;
             applicationSettings.PersistenceTestingFramework = GetPersistenceTestingFramework();
             applicationSettings.GenerateColumnNameMapping = generateColumnNameMappingCheckBox.Checked;
+            applicationSettings.BaseClassProvidesIdProperty = baseClassProvidesIdPropertyCheckBox.Checked;
         }
 
         private void BindData()

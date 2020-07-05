@@ -145,6 +145,7 @@ namespace NHibernateMappingGenerator
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.baseClassProvidesIdPropertyCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dbTableDetailsGridView)).BeginInit();
             this.mainTabControl.SuspendLayout();
             this.basicSettingsTabPage.SuspendLayout();
@@ -886,6 +887,7 @@ namespace NHibernateMappingGenerator
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.baseClassProvidesIdPropertyCheckBox);
             this.groupBox8.Controls.Add(this.generateColumnNameMappingCheckBox);
             this.groupBox8.Controls.Add(this.comboBoxForeignCollection);
             this.groupBox8.Controls.Add(this.wcfDataContractCheckBox);
@@ -897,7 +899,7 @@ namespace NHibernateMappingGenerator
             this.groupBox8.Controls.Add(this.textBoxInheritence);
             this.groupBox8.Location = new System.Drawing.Point(212, 194);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(309, 209);
+            this.groupBox8.Size = new System.Drawing.Size(309, 224);
             this.groupBox8.TabIndex = 6;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Mapping Options";
@@ -905,7 +907,7 @@ namespace NHibernateMappingGenerator
             // generateColumnNameMappingCheckBox
             // 
             this.generateColumnNameMappingCheckBox.AutoSize = true;
-            this.generateColumnNameMappingCheckBox.Location = new System.Drawing.Point(15, 178);
+            this.generateColumnNameMappingCheckBox.Location = new System.Drawing.Point(15, 196);
             this.generateColumnNameMappingCheckBox.Name = "generateColumnNameMappingCheckBox";
             this.generateColumnNameMappingCheckBox.Size = new System.Drawing.Size(183, 17);
             this.generateColumnNameMappingCheckBox.TabIndex = 21;
@@ -920,7 +922,7 @@ namespace NHibernateMappingGenerator
             "IList",
             "ICollection",
             "Iesi.Collections.Generic.ISet"});
-            this.comboBoxForeignCollection.Location = new System.Drawing.Point(15, 126);
+            this.comboBoxForeignCollection.Location = new System.Drawing.Point(15, 144);
             this.comboBoxForeignCollection.Name = "comboBoxForeignCollection";
             this.comboBoxForeignCollection.Size = new System.Drawing.Size(193, 21);
             this.comboBoxForeignCollection.TabIndex = 20;
@@ -928,7 +930,7 @@ namespace NHibernateMappingGenerator
             // wcfDataContractCheckBox
             // 
             this.wcfDataContractCheckBox.AutoSize = true;
-            this.wcfDataContractCheckBox.Location = new System.Drawing.Point(13, 87);
+            this.wcfDataContractCheckBox.Location = new System.Drawing.Point(13, 105);
             this.wcfDataContractCheckBox.Name = "wcfDataContractCheckBox";
             this.wcfDataContractCheckBox.Size = new System.Drawing.Size(171, 17);
             this.wcfDataContractCheckBox.TabIndex = 1;
@@ -938,7 +940,7 @@ namespace NHibernateMappingGenerator
             // labelForeignEntity
             // 
             this.labelForeignEntity.AutoSize = true;
-            this.labelForeignEntity.Location = new System.Drawing.Point(12, 110);
+            this.labelForeignEntity.Location = new System.Drawing.Point(12, 128);
             this.labelForeignEntity.Name = "labelForeignEntity";
             this.labelForeignEntity.Size = new System.Drawing.Size(196, 13);
             this.labelForeignEntity.TabIndex = 6;
@@ -947,7 +949,7 @@ namespace NHibernateMappingGenerator
             // partialClassesCheckBox
             // 
             this.partialClassesCheckBox.AutoSize = true;
-            this.partialClassesCheckBox.Location = new System.Drawing.Point(13, 64);
+            this.partialClassesCheckBox.Location = new System.Drawing.Point(13, 82);
             this.partialClassesCheckBox.Name = "partialClassesCheckBox";
             this.partialClassesCheckBox.Size = new System.Drawing.Size(141, 17);
             this.partialClassesCheckBox.TabIndex = 0;
@@ -957,7 +959,7 @@ namespace NHibernateMappingGenerator
             // labelCLassNamePrefix
             // 
             this.labelCLassNamePrefix.AutoSize = true;
-            this.labelCLassNamePrefix.Location = new System.Drawing.Point(12, 157);
+            this.labelCLassNamePrefix.Location = new System.Drawing.Point(12, 175);
             this.labelCLassNamePrefix.Name = "labelCLassNamePrefix";
             this.labelCLassNamePrefix.Size = new System.Drawing.Size(95, 13);
             this.labelCLassNamePrefix.TabIndex = 5;
@@ -974,7 +976,7 @@ namespace NHibernateMappingGenerator
             // 
             // textBoxClassNamePrefix
             // 
-            this.textBoxClassNamePrefix.Location = new System.Drawing.Point(110, 154);
+            this.textBoxClassNamePrefix.Location = new System.Drawing.Point(110, 172);
             this.textBoxClassNamePrefix.Name = "textBoxClassNamePrefix";
             this.textBoxClassNamePrefix.Size = new System.Drawing.Size(98, 20);
             this.textBoxClassNamePrefix.TabIndex = 4;
@@ -1348,6 +1350,16 @@ namespace NHibernateMappingGenerator
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.Size = new System.Drawing.Size(300, 16);
             // 
+            // baseClassProvidesIdPropertyCheckBox
+            // 
+            this.baseClassProvidesIdPropertyCheckBox.AutoSize = true;
+            this.baseClassProvidesIdPropertyCheckBox.Location = new System.Drawing.Point(13, 61);
+            this.baseClassProvidesIdPropertyCheckBox.Name = "baseClassProvidesIdPropertyCheckBox";
+            this.baseClassProvidesIdPropertyCheckBox.Size = new System.Drawing.Size(178, 17);
+            this.baseClassProvidesIdPropertyCheckBox.TabIndex = 22;
+            this.baseClassProvidesIdPropertyCheckBox.Text = "Base Class Provides ID Property";
+            this.baseClassProvidesIdPropertyCheckBox.UseVisualStyleBackColor = true;
+            // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1521,6 +1533,7 @@ namespace NHibernateMappingGenerator
         private RadioButton nhibernatePersistenceTestingRadioButton;
         private RadioButton fluentNHibernateRadioButton;
         private CheckBox generateColumnNameMappingCheckBox;
+        private CheckBox baseClassProvidesIdPropertyCheckBox;
     }
 }
 

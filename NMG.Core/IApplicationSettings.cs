@@ -39,5 +39,6 @@ namespace NMG.Core
         ValidationStyle ValidatorStyle { get; }
         bool GenerateWcfDataContract { get; }
         bool GenerateColumnNameMapping { get; }
+        bool BaseClassProvidesIdProperty { get; }
     }
 }

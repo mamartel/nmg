@@ -21,7 +21,7 @@ namespace NHibernateMappingGenerator
 
         public List<Connection> Connections { get; set; }
         public Guid? LastUsedConnection { get; set; }
-            
+
         public string NameSpace { get; set; }
 
         public string NameSpaceMap { get; set; }
@@ -88,13 +88,14 @@ namespace NHibernateMappingGenerator
         public ValidationStyle ValidatorStyle { get; set; }
         public bool GenerateWcfDataContract { get; set; }
         public bool GenerateColumnNameMapping { get; set; }
+        public bool BaseClassProvidesIdProperty { get; set; }
 
         public void Save()
         {
             var streamWriter = new StreamWriter(Application.LocalUserAppDataPath + @"\nmg.config", false);
             using (streamWriter)
             {
-                var xmlSerializer = new XmlSerializer(typeof (ApplicationSettings));
+                var xmlSerializer = new XmlSerializer(typeof(ApplicationSettings));
                 xmlSerializer.Serialize(streamWriter, this);
             }
         }
@@ -102,7 +103,7 @@ namespace NHibernateMappingGenerator
         public static ApplicationSettings Load()
         {
             ApplicationSettings appSettings = null;
-            var xmlSerializer = new XmlSerializer(typeof (ApplicationSettings));
+            var xmlSerializer = new XmlSerializer(typeof(ApplicationSettings));
             var fi = new FileInfo(Application.LocalUserAppDataPath + @"\nmg.config");
             if (fi.Exists)
             {
