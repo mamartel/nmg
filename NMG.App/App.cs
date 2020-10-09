@@ -386,8 +386,8 @@ namespace NHibernateMappingGenerator
             toolStripStatusLabel.Text = string.Empty;
             try
             {
-                tabControl1.UseWaitCursor = true;
-                ToogleTabPagesEnabled(false);
+                SetBusy(true);
+
                 if (tablesListBox.SelectedIndex == -1)
                 {
                     dbTableDetailsGridView.DataSource = new List<Column>();
@@ -416,16 +416,18 @@ namespace NHibernateMappingGenerator
             }
             finally
             {
-                ToogleTabPagesEnabled(true);
-                tabControl1.UseWaitCursor = false;
+                SetBusy(false);
             }
         }
 
-        private void ToogleTabPagesEnabled(bool enabled)
+        private void SetBusy(bool busy)
         {
+            splitContainer1.Panel2.UseWaitCursor = busy;
+            tablesListBox.Enabled = !busy;
+
             foreach (Control page in tabControl1.Controls)
             {
-                page.Enabled = enabled;
+                page.Enabled = !busy;
             }
         }
 
