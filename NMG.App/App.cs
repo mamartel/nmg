@@ -27,7 +27,7 @@ namespace NHibernateMappingGenerator
         {
             InitializeComponent();
             ownersComboBox.SelectedIndexChanged += OwnersSelectedIndexChanged;
-            tablesListBox.SelectedIndexChanged += TablesListSelectedIndexChanged;
+            tablesListBox.SelectedValueChanged += TablesListSelectedValueChanged;
             connectionNameComboBox.SelectedIndexChanged += ConnectionNameSelectedIndexChanged;
             dbTableDetailsGridView.DataError += DataError;
             connectionButton.Click += ConnectionButtonClick;
@@ -381,7 +381,7 @@ namespace NHibernateMappingGenerator
             }
         }
 
-        private async void TablesListSelectedIndexChanged(object sender, EventArgs e)
+        private async void TablesListSelectedValueChanged(object sender, EventArgs e)
         {
             toolStripStatusLabel.Text = string.Empty;
             try
@@ -394,24 +394,20 @@ namespace NHibernateMappingGenerator
                     return;
                 }
 
-                var lastTableSelectedIndex = LastTableSelected();
-                if (lastTableSelectedIndex != null)
+                if (tablesListBox.SelectedItem  is Table table)
                 {
-                    if (tablesListBox.Items[lastTableSelectedIndex.Value] is Table table)
-                    {
-                        CaptureApplicationSettings();
+                    CaptureApplicationSettings();
 
-                        await PopulateTableDetails(table);
+                    await PopulateTableDetails(table);
 
-                        ToggleColumnsBasedOnAppSettings(applicationSettings);
+                    ToggleColumnsBasedOnAppSettings(applicationSettings);
 
-                        GenerateAndDisplayCode(table);
+                    GenerateAndDisplayCode(table);
 
-                        // Display entity name based on formatted table name
-                        UpdateApplicationPreferences(false);
-                        var formatter = TextFormatterFactory.GetTextFormatter(applicationSettings);
-                        entityNameTextBox.Text = formatter.FormatText(table.Name);
-                    }
+                    // Display entity name based on formatted table name
+                    UpdateApplicationPreferences(false);
+                    var formatter = TextFormatterFactory.GetTextFormatter(applicationSettings);
+                    entityNameTextBox.Text = formatter.FormatText(table.Name);
                 }
             }
             catch (Exception ex)
@@ -435,22 +431,6 @@ namespace NHibernateMappingGenerator
 
         readonly IList<int> _cachedTableListSelection = new List<int>();
         private Table _currentTable;
-
-        private int? LastTableSelected()
-        {
-            int? lastTableIndex = null;  
-            foreach (int i in tablesListBox.SelectedIndices)
-            {
-                if (_cachedTableListSelection.Contains(i))
-                    continue;
-                lastTableIndex = i;
-                break;
-            }
-            _cachedTableListSelection.Clear();
-            foreach (int i in tablesListBox.SelectedIndices)
-                _cachedTableListSelection.Add(i);
-            return lastTableIndex;
-        }
 
         private async Task PopulateTableDetails(Table selectedTable)
         {
@@ -513,12 +493,12 @@ namespace NHibernateMappingGenerator
                 owners = new List<string> { "dbo" };
             }
 
-            tablesListBox.SelectedIndexChanged -= TablesListSelectedIndexChanged;
+            tablesListBox.SelectedValueChanged -= TablesListSelectedValueChanged;
 
             ownersComboBox.Items.Clear();
             ownersComboBox.Items.AddRange(owners.ToArray());
 
-            tablesListBox.SelectedIndexChanged += TablesListSelectedIndexChanged;
+            tablesListBox.SelectedValueChanged += TablesListSelectedValueChanged;
             ownersComboBox.SelectedIndex = 0;
         }
 
