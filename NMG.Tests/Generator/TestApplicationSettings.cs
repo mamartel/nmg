@@ -40,5 +40,6 @@ namespace NMG.Tests.Generator
         public ValidationStyle ValidatorStyle { get; set; }
         public bool GenerateWcfDataContract { get; set; }
         public bool GenerateColumnNameMapping { get; set; }
+        public bool BaseClassProvidesIdProperty { get; set; }
     }
 }
