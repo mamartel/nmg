@@ -9,6 +9,8 @@ using NMG.Core.Domain;
 using NMG.Core.Reader;
 using NMG.Core.TextFormatter;
 using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -136,6 +138,11 @@ namespace NHibernateMappingGenerator
         
         protected override void OnLoad(EventArgs e)
         {
+            Observable.FromEventPattern(handler => TableFilterTextBox.TextChanged += handler, handler => TableFilterTextBox.TextChanged -= handler).
+                       Throttle(TimeSpan.FromMilliseconds(500)).
+                       ObserveOn(SynchronizationContext.Current).
+                       Subscribe(pattern => OnTableFilterTextChanged(pattern.Sender, (EventArgs)pattern.EventArgs));
+
             LoadApplicationSettings();
             connectBtn.PerformClick();
         }
@@ -805,18 +812,9 @@ namespace NHibernateMappingGenerator
 
         private void OnTableFilterEnter(object sender, EventArgs e)
         {
-            var textbox = sender as TextBox;
-
-            if (textbox == null) return;
-
-            if (textbox.Text == textbox.Tag.ToString())
+            if (TableFilterTextBox.Text == TableFilterTextBox.Tag.ToString())
             {
-                textbox.TextChanged -= OnTableFilterTextChanged;
-
-                // Clear the hint text in the table filter textbox
-                textbox.Text = string.Empty;
-
-                textbox.TextChanged += OnTableFilterTextChanged;
+                TableFilterTextBox.Text = String.Empty;
             }
         }
 

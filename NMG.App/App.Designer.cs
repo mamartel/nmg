@@ -456,7 +456,6 @@ namespace NHibernateMappingGenerator
             this.TableFilterTextBox.TabIndex = 7;
             this.TableFilterTextBox.Tag = "Enter table filter here...";
             this.TableFilterTextBox.Text = "Enter table filter here...";
-            this.TableFilterTextBox.TextChanged += new System.EventHandler(this.OnTableFilterTextChanged);
             this.TableFilterTextBox.Enter += new System.EventHandler(this.OnTableFilterEnter);
             // 
             // tablesListBox
