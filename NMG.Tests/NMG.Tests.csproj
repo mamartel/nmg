@@ -30,7 +30,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -83,13 +83,6 @@
     <Compile Include="Reader\OracleMetadataReaderTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Lib\Castle.Core.dll" />
-    <Content Include="Lib\Castle.DynamicProxy2.dll" />
-    <Content Include="Lib\nunit.framework.dll" />
-    <Content Include="Lib\Rhino.Mocks.dll" />
-    <Content Include="Lib\Rhino.Mocks.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -120,9 +113,12 @@
       <Name>NMG.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="packages.config" />
+    <PackageReference Include="NUnit">
+      <Version>3.12.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Reader\oracle_configure.sql" />
   </ItemGroup>
 </Project>
