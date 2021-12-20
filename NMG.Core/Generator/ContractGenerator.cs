@@ -19,7 +19,7 @@ namespace NMG.Core.Generator
 
         public override void Generate(bool writeToFile = true)
         {
-			string className = appPrefs.ClassNamePrefix + Formatter.FormatSingular(Table.Name) + "Data";
+			string className = appPrefs.ClassNamePrefix + FieldFormatter.FormatSingular(Table.Name) + "Data";
 			var compileUnit = GetCompileUnit(className);
             var generateCode = GenerateCode(compileUnit, className);
 

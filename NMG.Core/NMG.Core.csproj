@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassNamingConvention.cs" />
     <Compile Include="Domain\ColumnDetail.cs" />
     <Compile Include="Domain\DotNetTypes.cs" />
     <Compile Include="Domain\Language.cs" />

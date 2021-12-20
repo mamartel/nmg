@@ -72,6 +72,31 @@ namespace NMG.Core.TextFormatter
 
     public class UnformattedTextFormatter : AbstractTextFormatter { }
 
+    public class TextFormatterChain : AbstractTextFormatter
+    {
+        public IList<ITextFormatter> Formatters { get; set; }
+
+        public TextFormatterChain()
+        {
+            Formatters = new List<ITextFormatter>();
+        }
+
+        public TextFormatterChain(params ITextFormatter[] formatters)
+        {
+            Formatters = new List<ITextFormatter>(formatters);
+        }
+
+        public override string FormatText(string text)
+        {
+            foreach (var formatter in Formatters)
+            {
+                text = formatter.FormatText(text);
+            }
+
+            return text;
+        }
+    }
+
     public class CamelCaseTextFormatter : AbstractTextFormatter
     {
         public override string FormatText(string text)
@@ -105,10 +130,41 @@ namespace NMG.Core.TextFormatter
 
     public static class TextFormatterFactory
     {
-        public static ITextFormatter GetTextFormatter(IApplicationSettings applicationPreferences)
+        public static ITextFormatter GetClassTextFormatter(IApplicationSettings applicationSettings)
         {
             ITextFormatter formatter;
-            switch(applicationPreferences.FieldNamingConvention)
+            switch (applicationSettings.ClassNamingConvention)
+            {
+                case ClassNamingConvention.SameAsDatabase:
+                    formatter = new UnformattedTextFormatter();
+                    break;
+                case ClassNamingConvention.CamelCase:
+                    formatter = new CamelCaseTextFormatter();
+                    break;
+                case ClassNamingConvention.PascalCase:
+                    formatter = new PascalCaseTextFormatter();
+                    break;
+                default:
+                    throw new Exception("Invalid or unsupported class naming convention.");
+            }
+
+            formatter.PrefixRemovalList = applicationSettings.FieldPrefixRemovalList;
+
+            if (applicationSettings.PrefixClassName)
+            {
+                formatter = new TextFormatterChain(
+                    formatter,
+                    new PrefixedTextFormatter(applicationSettings.ClassNamePrefix)
+                );
+            }
+
+            return formatter;
+        }
+
+        public static ITextFormatter GetFieldTextFormatter(IApplicationSettings applicationPreferences)
+        {
+            ITextFormatter formatter;
+            switch (applicationPreferences.FieldNamingConvention)
             {
                 case FieldNamingConvention.SameAsDatabase:
                     formatter = new UnformattedTextFormatter();

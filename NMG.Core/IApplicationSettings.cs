@@ -14,12 +14,14 @@ namespace NMG.Core
         bool IsFluent { get; }
         bool IsEntityFramework { get; }
         string Sequence { get; }
+        ClassNamingConvention ClassNamingConvention { get; }
         FieldGenerationConvention FieldGenerationConvention { get; }
         string FolderPath { get; }
         string DomainFolderPath { get; }
         string ForeignEntityCollectionType { get; }
         string InheritenceAndInterfaces { get; }
         string ClassNamePrefix { get; }
+        bool PrefixClassName { get; }
         bool EnableInflections { get; }
         bool GeneratePartialClasses { get; }
         FieldNamingConvention FieldNamingConvention { get; }

@@ -23,7 +23,7 @@ namespace NMG.Core.Generator
 
             if (writeToFile)
             {
-                WriteToFile(compileUnit, Formatter.FormatSingular(tableName));
+                WriteToFile(compileUnit, ClassFormatter.FormatSingular(tableName));
             }
             else
             {

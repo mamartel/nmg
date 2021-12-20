@@ -175,7 +175,6 @@ namespace NHibernateMappingGenerator
                 domainFolderTextBox.Text = applicationSettings.DomainFolderPath;
                 textBoxInheritence.Text = applicationSettings.InheritenceAndInterfaces;
                 comboBoxForeignCollection.Text = applicationSettings.ForeignEntityCollectionType;
-                textBoxClassNamePrefix.Text = applicationSettings.ClassNamePrefix;
                 EnableInflectionsCheckBox.Checked = applicationSettings.EnableInflections;
                 wcfDataContractCheckBox.Checked = applicationSettings.GenerateWcfContracts;
                 partialClassesCheckBox.Checked = applicationSettings.GeneratePartialClasses;
@@ -195,6 +194,15 @@ namespace NHibernateMappingGenerator
 
                 fieldPrefixListBox.Items.AddRange(applicationSettings.FieldPrefixRemovalList.ToArray());
                 removeFieldPrefixButton.Enabled = false;
+
+                prefixedTableCheckBox.Checked = applicationSettings.PrefixClassName;
+                tablePrefixTextBox.Text = applicationSettings.ClassNamePrefix;
+                camelCasedTableRadioButton.Checked = (applicationSettings.ClassNamingConvention == ClassNamingConvention.CamelCase);
+                pascalCasedTableRaidoButton.Checked = (applicationSettings.ClassNamingConvention == ClassNamingConvention.PascalCase);
+                sameAsTableRadioButton.Checked = (applicationSettings.ClassNamingConvention == ClassNamingConvention.SameAsDatabase);
+
+                sameAsTableRadioButton.Checked = (!prefixedTableCheckBox.Checked && !pascalCasedTableRaidoButton.Checked &&
+                                               !camelCasedTableRadioButton.Checked);
 
                 prefixRadioButton.Checked = !string.IsNullOrEmpty(applicationSettings.Prefix);
                 prefixTextBox.Text = applicationSettings.Prefix;
@@ -340,10 +348,12 @@ namespace NHibernateMappingGenerator
             applicationSettings.InheritenceAndInterfaces = textBoxInheritence.Text;
             applicationSettings.ForeignEntityCollectionType = comboBoxForeignCollection.Text;
             applicationSettings.FieldPrefixRemovalList = applicationSettings.FieldPrefixRemovalList;
+            applicationSettings.ClassNamingConvention = GetClassNamingConvention();
             applicationSettings.FieldNamingConvention = GetFieldNamingConvention();
             applicationSettings.Prefix = prefixTextBox.Text;
             applicationSettings.IsCastle = IsCastle;
-            applicationSettings.ClassNamePrefix = textBoxClassNamePrefix.Text;
+            applicationSettings.ClassNamePrefix = tablePrefixTextBox.Text;
+            applicationSettings.PrefixClassName = prefixedTableCheckBox.Checked;
             applicationSettings.EnableInflections = EnableInflectionsCheckBox.Checked;
             applicationSettings.GeneratePartialClasses = partialClassesCheckBox.Checked;
             applicationSettings.GenerateWcfContracts = wcfDataContractCheckBox.Checked;
@@ -413,7 +423,7 @@ namespace NHibernateMappingGenerator
 
                     // Display entity name based on formatted table name
                     UpdateApplicationPreferences(false);
-                    var formatter = TextFormatterFactory.GetTextFormatter(applicationSettings);
+                    var formatter = TextFormatterFactory.GetFieldTextFormatter(applicationSettings);
                     entityNameTextBox.Text = formatter.FormatText(table.Name);
                 }
             }
@@ -726,6 +736,9 @@ namespace NHibernateMappingGenerator
             applicationSettings.AssemblyName = assemblyNameTextBox.Text;
             applicationSettings.Sequence = sequence;
             applicationSettings.Language = LanguageSelected;
+            applicationSettings.ClassNamingConvention = GetClassNamingConvention();
+            applicationSettings.ClassNamePrefix = tablePrefixTextBox.Text;
+            applicationSettings.PrefixClassName = prefixedTableCheckBox.Checked;
             applicationSettings.FieldNamingConvention = GetFieldNamingConvention();
             applicationSettings.FieldGenerationConvention = GetFieldGenerationConvention();
             applicationSettings.Prefix = prefixTextBox.Text;
@@ -741,6 +754,16 @@ namespace NHibernateMappingGenerator
             if (nhibernatePersistenceTestingRadioButton.Checked)
                 persistenceTestingFramework = PersistenceTestingFramework.NHibernatePersistenceTesting;
             return persistenceTestingFramework;
+        }
+
+        private ClassNamingConvention GetClassNamingConvention()
+        {
+            var convention = ClassNamingConvention.SameAsDatabase;
+            if (camelCasedTableRadioButton.Checked)
+                convention = ClassNamingConvention.CamelCase;
+            if (pascalCasedTableRaidoButton.Checked)
+                convention = ClassNamingConvention.PascalCase;
+            return convention;
         }
 
         private FieldGenerationConvention GetFieldGenerationConvention()
@@ -873,6 +896,5 @@ namespace NHibernateMappingGenerator
         {
             nameAsForeignTableCheckBox.Enabled = includeForeignKeysCheckBox.Checked;
         }
-
     }
 }

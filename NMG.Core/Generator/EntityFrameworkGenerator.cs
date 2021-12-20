@@ -60,23 +60,23 @@ namespace NMG.Core.Generator
             if (UsesSequence)
             {
                 var fieldName = FixPropertyWithSameClassName(Table.PrimaryKey.Columns[0].Name, Table.Name);
-                constructor.Statements.Add(new CodeSnippetStatement(String.Format(TABS + "Id(x => x.{0}).Column(x => x.{1}).GeneratedBy.Sequence(\"{2}\")", Formatter.FormatText(fieldName), fieldName, appPrefs.Sequence)));
+                constructor.Statements.Add(new CodeSnippetStatement(String.Format(TABS + "Id(x => x.{0}).Column(x => x.{1}).GeneratedBy.Sequence(\"{2}\")", FieldFormatter.FormatText(fieldName), fieldName, appPrefs.Sequence)));
             }
             else if (Table.PrimaryKey != null && Table.PrimaryKey.Type == PrimaryKeyType.PrimaryKey)
             {
                 var fieldName = FixPropertyWithSameClassName(Table.PrimaryKey.Columns[0].Name, Table.Name);
-                constructor.Statements.Add(GetIdMapCodeSnippetStatement(appPrefs, Table, Table.PrimaryKey.Columns[0].Name, fieldName, Table.PrimaryKey.Columns[0].DataType, Formatter));
+                constructor.Statements.Add(GetIdMapCodeSnippetStatement(appPrefs, Table, Table.PrimaryKey.Columns[0].Name, fieldName, Table.PrimaryKey.Columns[0].DataType, FieldFormatter));
             }
             else if (Table.PrimaryKey != null)
             {
-                constructor.Statements.Add(GetIdMapCodeSnippetStatement(Table.PrimaryKey, Table, Formatter));
+                constructor.Statements.Add(GetIdMapCodeSnippetStatement(Table.PrimaryKey, Table, FieldFormatter));
             }
 
             // Many To One Mapping
             foreach (var fk in Table.ForeignKeys.Where(fk => fk.Columns.First().IsForeignKey && appPrefs.IncludeForeignKeys))
             {
                 var propertyName = appPrefs.NameFkAsForeignTable ? fk.UniquePropertyName : fk.Columns.First().Name;
-                propertyName = Formatter.FormatSingular(propertyName);
+                propertyName = FieldFormatter.FormatSingular(propertyName);
                 var fieldName = FixPropertyWithSameClassName(propertyName, Table.Name);
                 
                 var propertyMapType = "HasRequired";
@@ -92,15 +92,15 @@ namespace NMG.Core.Generator
             var columnMapper = new DBColumnMapper(appPrefs);
             foreach (var column in Table.Columns.Where(x => !x.IsPrimaryKey && (!x.IsForeignKey || !appPrefs.IncludeForeignKeys)))
             {
-                var propertyName = Formatter.FormatText(column.Name);
+                var propertyName = FieldFormatter.FormatText(column.Name);
                 var fieldName = FixPropertyWithSameClassName(propertyName, Table.Name);
-                var columnMapping = columnMapper.Map(column, fieldName, Formatter, appPrefs.IncludeLengthAndScale);
+                var columnMapping = columnMapper.Map(column, fieldName, FieldFormatter, appPrefs.IncludeLengthAndScale);
                 constructor.Statements.Add(new CodeSnippetStatement(TABS + columnMapping));
             }
 
             if (appPrefs.IncludeHasMany)
             {
-                Table.HasManyRelationships.ToList().ForEach(x => constructor.Statements.Add(new EFOneToMany(Formatter, pascalCaseTextFormatter).Create(x)));
+                Table.HasManyRelationships.ToList().ForEach(x => constructor.Statements.Add(new EFOneToMany(FieldFormatter, pascalCaseTextFormatter).Create(x)));
             }
 
             newType.Members.Add(constructor);

@@ -21,9 +21,7 @@ namespace NMG.Core.Generator
 
         public override void Generate(bool writeToFile = true)
         {
-            var pascalCaseTextFormatter = new PascalCaseTextFormatter { PrefixRemovalList = appPrefs.FieldPrefixRemovalList };
-
-            var entityClassName = $"{appPrefs.ClassNamePrefix}{pascalCaseTextFormatter.FormatSingular(Table.Name)}";
+            var entityClassName = ClassFormatter.FormatSingular(Table.Name);
             var mapClassName = $"{entityClassName}Map";
 
             var compileUnit = GetCompleteCompileUnit(mapClassName, entityClassName);
@@ -62,7 +60,7 @@ namespace NMG.Core.Generator
             var constructor = new CodeConstructor { Attributes = MemberAttributes.Public };
 
             // Table Name - Only ouput if table is different than the class name.
-            if (Table.Name.ToLower() != className.ToLower())
+            if (!string.Equals(Table.Name, className, StringComparison.InvariantCultureIgnoreCase))
             {
                 constructor.Statements.Add(new CodeSnippetStatement(TABS + "Table(\"" + Table.Name + "\");"));
             }
@@ -84,37 +82,37 @@ namespace NMG.Core.Generator
                     constructor.Statements.Add(
                         new CodeSnippetStatement(TABS +
                                                  mapper.IdSequenceMap(Table.PrimaryKey.Columns[0], appPrefs.Sequence,
-                                                                      Formatter)));
+                                                                      FieldFormatter)));
                 }
                 else if (Table.PrimaryKey.Type == PrimaryKeyType.PrimaryKey)
                 {
                     constructor.Statements.Add(
-                        new CodeSnippetStatement(TABS + mapper.IdMap(Table.PrimaryKey.Columns[0], Formatter)));
+                        new CodeSnippetStatement(TABS + mapper.IdMap(Table.PrimaryKey.Columns[0], FieldFormatter)));
                 }
                 else if (Table.PrimaryKey.Type == PrimaryKeyType.CompositeKey)
                 {
                     var pkColumns = Table.PrimaryKey.Columns;
                     constructor.Statements.Add(
-                        new CodeSnippetStatement(TABS + mapper.CompositeIdMap(pkColumns, Formatter)));
+                        new CodeSnippetStatement(TABS + mapper.CompositeIdMap(pkColumns, FieldFormatter)));
                 }
             }
 
             // Property Map
             foreach (var column in Table.Columns.Where(x => !x.IsPrimaryKey && (!x.IsForeignKey || !appPrefs.IncludeForeignKeys)).OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase))
             {
-                constructor.Statements.Add(new CodeSnippetStatement(TABS + mapper.Map(column, Formatter, appPrefs.IncludeLengthAndScale)));
+                constructor.Statements.Add(new CodeSnippetStatement(TABS + mapper.Map(column, FieldFormatter, appPrefs.IncludeLengthAndScale)));
             }
 
             // Many To One Mapping
             foreach (var fk in Table.ForeignKeys.Where(fk => fk.Columns.First().IsForeignKey && appPrefs.IncludeForeignKeys))
             {
-                constructor.Statements.Add(new CodeSnippetStatement(mapper.Reference(fk, Formatter)));
+                constructor.Statements.Add(new CodeSnippetStatement(mapper.Reference(fk, FieldFormatter)));
             }
 
             // Bag 
             if (appPrefs.IncludeHasMany)
             {
-                Table.HasManyRelationships.ToList().ForEach(x => constructor.Statements.Add(new CodeSnippetStatement(mapper.Bag(x, Formatter))));
+                Table.HasManyRelationships.ToList().ForEach(x => constructor.Statements.Add(new CodeSnippetStatement(mapper.Bag(x, FieldFormatter))));
             }
 
             newType.Members.Add(constructor);

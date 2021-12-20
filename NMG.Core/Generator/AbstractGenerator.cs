@@ -35,7 +35,8 @@ namespace NMG.Core.Generator
             this.assemblyName = assemblyName;
             this.sequenceName = sequenceName;
             Table = table;
-            Formatter = TextFormatterFactory.GetTextFormatter(appPrefs);
+            ClassFormatter = TextFormatterFactory.GetClassTextFormatter(appPrefs);
+            FieldFormatter = TextFormatterFactory.GetFieldTextFormatter(appPrefs);
             this.applicationPreferences = appPrefs;
         }
 
@@ -47,7 +48,9 @@ namespace NMG.Core.Generator
             }
         }
 
-        public ITextFormatter Formatter { get; set; }
+        public ITextFormatter ClassFormatter { get; set; }
+
+        public ITextFormatter FieldFormatter { get; set; }
 
         public string GeneratedCode { get; set; }
 

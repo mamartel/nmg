@@ -41,6 +41,8 @@ namespace NHibernateMappingGenerator
         public bool IsAutoProperty { get; set; }
         public string Sequence { get; set; }
 
+        public ClassNamingConvention ClassNamingConvention { get; set; }
+
         public FieldGenerationConvention FieldGenerationConvention { get; set; }
 
         public string FolderPath { get; set; }
@@ -52,6 +54,7 @@ namespace NHibernateMappingGenerator
         public string InheritenceAndInterfaces { get; set; }
 
         public string ClassNamePrefix { get; set; }
+        public bool PrefixClassName { get; set; }
 
         public bool EnableInflections { get; set; }
 

@@ -15,7 +15,7 @@ namespace NMG.Core.Generator
 
         public override void Generate(bool writeToFile = true)
         {
-            string fileName = filePath + Formatter.FormatSingular(tableName) + ".hbm.xml";
+            string fileName = filePath + FieldFormatter.FormatSingular(tableName) + ".hbm.xml";
             using (var stringWriter = new StringWriter())
             {
                 XmlDocument xmldoc = CreateMappingDocument();
@@ -51,7 +51,7 @@ namespace NMG.Core.Generator
             xmldoc.AppendChild(root);
 
             XmlElement classElement = xmldoc.CreateElement("class");
-            classElement.SetAttribute("name", Formatter.FormatSingular(tableName));
+            classElement.SetAttribute("name", FieldFormatter.FormatSingular(tableName));
             classElement.SetAttribute("table", tableName);
             classElement.SetAttribute("lazy", "true");
             root.AppendChild(classElement);
@@ -69,12 +69,12 @@ namespace NMG.Core.Generator
                         if (key.IsForeignKey && applicationPreferences.IncludeForeignKeys)
                         {
                             keyProperty = xmldoc.CreateElement("key-many-to-one");
-                            keyProperty.SetAttribute("name", Formatter.FormatSingular(key.ForeignKeyTableName));
+                            keyProperty.SetAttribute("name", FieldFormatter.FormatSingular(key.ForeignKeyTableName));
                             keyProperty.SetAttribute("column", key.Name);
                         } else
                         {
                             keyProperty = xmldoc.CreateElement("key-property");
-                            keyProperty.SetAttribute("name", Formatter.FormatText(key.Name));
+                            keyProperty.SetAttribute("name", FieldFormatter.FormatText(key.Name));
                             keyProperty.SetAttribute("column", key.Name);
                         }
                         idElement.AppendChild(keyProperty);
@@ -84,7 +84,7 @@ namespace NMG.Core.Generator
                 {
                     XmlElement keyProperty = xmldoc.CreateElement("id");
                     Column primaryKeyColum = primaryKey.Columns.Single();
-                    keyProperty.SetAttribute("name", Formatter.FormatText(primaryKeyColum.Name));
+                    keyProperty.SetAttribute("name", FieldFormatter.FormatText(primaryKeyColum.Name));
                     keyProperty.SetAttribute("column", primaryKeyColum.Name); //If ID Column is attribute.
                     if (primaryKeyColum.IsIdentity)
                     {
@@ -101,9 +101,9 @@ namespace NMG.Core.Generator
                 XmlElement element = column.IsForeignKey && applicationPreferences.IncludeForeignKeys ? xmldoc.CreateElement("many-to-one") 
                                                                                                       : xmldoc.CreateElement("property");
                 if (column.IsForeignKey && applicationPreferences.IncludeForeignKeys && applicationPreferences.NameFkAsForeignTable)
-                    element.SetAttribute("name", Formatter.FormatSingular(column.ForeignKeyTableName));
+                    element.SetAttribute("name", FieldFormatter.FormatSingular(column.ForeignKeyTableName));
                 else
-                    element.SetAttribute("name", Formatter.FormatText(column.Name));
+                    element.SetAttribute("name", FieldFormatter.FormatText(column.Name));
 
                 XmlElement columnElement = xmldoc.CreateElement("column");
                 columnElement.SetAttribute("name", column.Name);
@@ -121,7 +121,7 @@ namespace NMG.Core.Generator
             foreach (var hasMany in Table.HasManyRelationships)
             {
                 XmlElement bagElement = applicationPreferences.ForeignEntityCollectionType.Contains("Set") ? xmldoc.CreateElement("set") : xmldoc.CreateElement("bag");
-                bagElement.SetAttribute("name", Formatter.FormatPlural(hasMany.Reference));
+                bagElement.SetAttribute("name", FieldFormatter.FormatPlural(hasMany.Reference));
                 if (applicationPreferences.IncludeHasMany)
                     bagElement.SetAttribute("inverse", "true");
                 classElement.AppendChild(bagElement);
@@ -129,7 +129,7 @@ namespace NMG.Core.Generator
                 keyElement.SetAttribute("column", hasMany.ReferenceColumn);
                 bagElement.AppendChild(keyElement);
                 XmlElement oneToManyElement = xmldoc.CreateElement("one-to-many");
-                oneToManyElement.SetAttribute("class", Formatter.FormatSingular(hasMany.Reference));
+                oneToManyElement.SetAttribute("class", FieldFormatter.FormatSingular(hasMany.Reference));
                 bagElement.AppendChild(oneToManyElement);
             }
 

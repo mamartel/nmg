@@ -61,16 +61,16 @@ namespace NMG.Core.Generator
             {
                 var fieldName = FixPropertyWithSameClassName(Table.PrimaryKey.Columns[0].Name, Table.Name);
                 constructor.Statements.Add(new CodeSnippetStatement(String.Format(TABS + "Id(x => x.{0}).Column(x => x.{1}).GeneratedBy.Sequence(\"{2}\")",
-                    Formatter.FormatText(fieldName), fieldName, appPrefs.Sequence)));
+                    FieldFormatter.FormatText(fieldName), fieldName, appPrefs.Sequence)));
             }
             else if (Table.PrimaryKey != null && Table.PrimaryKey.Type == PrimaryKeyType.PrimaryKey)
             {
                 var fieldName = FixPropertyWithSameClassName(Table.PrimaryKey.Columns[0].Name, Table.Name);
-                constructor.Statements.Add(GetIdMapCodeSnippetStatement(this.appPrefs, Table, Table.PrimaryKey.Columns[0].Name, fieldName, Table.PrimaryKey.Columns[0].DataType, Formatter));
+                constructor.Statements.Add(GetIdMapCodeSnippetStatement(this.appPrefs, Table, Table.PrimaryKey.Columns[0].Name, fieldName, Table.PrimaryKey.Columns[0].DataType, FieldFormatter));
             }
             else if (Table.PrimaryKey != null)
             {
-                constructor.Statements.Add(GetIdMapCodeSnippetStatement(Table.PrimaryKey, Table, Formatter));
+                constructor.Statements.Add(GetIdMapCodeSnippetStatement(Table.PrimaryKey, Table, FieldFormatter));
             }
 
             // Many To One Mapping
@@ -78,7 +78,7 @@ namespace NMG.Core.Generator
             {
                 var propertyName = appPrefs.NameFkAsForeignTable ? fk.UniquePropertyName : fk.Columns.First().Name;
                 string name = propertyName;
-                propertyName = Formatter.FormatSingular(propertyName);
+                propertyName = FieldFormatter.FormatSingular(propertyName);
                 var fieldName = FixPropertyWithSameClassName(propertyName, Table.Name);
                 var pkAlsoFkQty = (from fks in Table.ForeignKeys.Where(fks => fks.UniquePropertyName == name) select fks).Count();
                 if (pkAlsoFkQty > 1)
@@ -96,15 +96,15 @@ namespace NMG.Core.Generator
             var columnMapper = new DBColumnMapper(appPrefs);
             foreach (var column in Table.Columns.Where(x => !x.IsPrimaryKey && (!x.IsForeignKey || !appPrefs.IncludeForeignKeys)))
             {
-                var propertyName = Formatter.FormatText(column.Name);
+                var propertyName = FieldFormatter.FormatText(column.Name);
                 var fieldName = FixPropertyWithSameClassName(propertyName, Table.Name);
-                var columnMapping = columnMapper.Map(column, fieldName, Formatter, appPrefs.IncludeLengthAndScale);
+                var columnMapping = columnMapper.Map(column, fieldName, FieldFormatter, appPrefs.IncludeLengthAndScale);
                 constructor.Statements.Add(new CodeSnippetStatement(TABS + columnMapping));
             }
 
             // Bag (HasMany in FluentMapping)
             if (appPrefs.IncludeHasMany)
-                Table.HasManyRelationships.ToList().ForEach(x => constructor.Statements.Add(new OneToMany(Formatter).Create(x)));
+                Table.HasManyRelationships.ToList().ForEach(x => constructor.Statements.Add(new OneToMany(FieldFormatter).Create(x)));
 
             newType.Members.Add(constructor);
             return compileUnit;
