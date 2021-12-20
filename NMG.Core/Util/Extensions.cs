@@ -1,10 +1,22 @@
-﻿using System.Globalization;
+﻿using Microsoft.CSharp;
+using System;
+using System.CodeDom;
+using System.Globalization;
 using System.Threading;
 
 namespace NMG.Core.Util
 {
     public static class Extensions
     {
+        public static string GetNamePreservePrimitive(this Type type)
+        {
+            using (var provider = new CSharpCodeProvider())
+            {
+                var typeRef = new CodeTypeReference(type);
+                return provider.GetTypeOutput(typeRef);
+            }
+        }
+
         public static string GetFormattedText(this string text)
         {
             string formattedText = text.Replace('_', ' ');
