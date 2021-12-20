@@ -564,7 +564,7 @@ namespace NMG.Core.Generator
         {
             if (className.ToLowerInvariant() == "con")
                 className = className + "Table";
-            string fileName = filePath + className;
+            string fileName = Path.Combine(filePath, className);
             return provider.FileExtension[0] == '.'
                        ? fileName + provider.FileExtension
                        : fileName + "." + provider.FileExtension;
