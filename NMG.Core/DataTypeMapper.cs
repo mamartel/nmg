@@ -71,6 +71,11 @@ namespace NMG.Core
         //http://msdn.microsoft.com/en-us/library/cc716729.aspx
         private Type MapFromSqlServerDBType(string dataType, int? dataLength, int? dataPrecision, int? dataScale)
         {
+            // https://docs.microsoft.com/en-us/sql/t-sql/data-types/float-and-real-transact-sql?view=sql-server-ver15
+            if (string.Equals(dataType, "FLOAT", StringComparison.OrdinalIgnoreCase)
+                && (dataPrecision ?? 53) >= 25)
+                return typeof(System.Double);
+
             return MapFromDBType(dataType, dataLength, dataPrecision, dataScale);
         }
 
