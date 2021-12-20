@@ -45,8 +45,11 @@ namespace NHibernateMappingGenerator
             codeGenerator.Generate(writeToFile);
             GeneratedDomainCode = codeGenerator.GeneratedCode;
 
-            testGenerator.Generate(writeToFile);
-            GeneratedTestCode = testGenerator.GeneratedCode;
+            if (applicationPreferences.PersistenceTestingFramework != PersistenceTestingFramework.Disabled)
+            {
+                testGenerator.Generate(writeToFile);
+                GeneratedTestCode = testGenerator.GeneratedCode;
+            }
 
             if (applicationPreferences.IsFluent)
             {

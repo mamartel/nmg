@@ -216,6 +216,7 @@ namespace NHibernateMappingGenerator
                 generateInFoldersCheckBox.Checked = applicationSettings.GenerateInFolders;
 
                 testAttributeTextBox.Text = applicationSettings.TestMethodAttributeName != String.Empty ? applicationSettings.TestMethodAttributeName : "Test";
+                testDisabledRadioButton.Checked = applicationSettings.PersistenceTestingFramework == PersistenceTestingFramework.Disabled;
                 fluentNHibernateRadioButton.Checked = applicationSettings.PersistenceTestingFramework == PersistenceTestingFramework.FluentNHibernate;
                 nhibernatePersistenceTestingRadioButton.Checked = applicationSettings.PersistenceTestingFramework == PersistenceTestingFramework.NHibernatePersistenceTesting;
                 generateColumnNameMappingCheckBox.Checked = applicationSettings.GenerateColumnNameMapping;
@@ -750,7 +751,9 @@ namespace NHibernateMappingGenerator
 
         private PersistenceTestingFramework GetPersistenceTestingFramework()
         {
-            var persistenceTestingFramework = PersistenceTestingFramework.FluentNHibernate;
+            var persistenceTestingFramework = PersistenceTestingFramework.Disabled;
+            if (fluentNHibernateRadioButton.Checked)
+                persistenceTestingFramework = PersistenceTestingFramework.FluentNHibernate;
             if (nhibernatePersistenceTestingRadioButton.Checked)
                 persistenceTestingFramework = PersistenceTestingFramework.NHibernatePersistenceTesting;
             return persistenceTestingFramework;
