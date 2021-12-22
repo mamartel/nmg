@@ -97,6 +97,8 @@ namespace NHibernateMappingGenerator
         public bool GenerateColumnNameMapping { get; set; }
         public bool BaseClassProvidesIdProperty { get; set; }
 
+        public bool QuietNullableWarnings { get; set; }
+
         public void Save()
         {
             var streamWriter = new StreamWriter(Application.LocalUserAppDataPath + @"\nmg.config", false);

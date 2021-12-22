@@ -9,6 +9,7 @@ using Microsoft.VisualBasic;
 using NMG.Core.Domain;
 using System.Text;
 using NMG.Core.TextFormatter;
+using System.Text.RegularExpressions;
 
 namespace NMG.Core.Generator
 {
@@ -45,10 +46,10 @@ namespace NMG.Core.Generator
         {
             var codeGenerationHelper = new CodeGenerationHelper();
             var compileUnit = codeGenerationHelper.GetCodeCompileUnitWithInheritanceAndInterface(nameSpace, className, appPrefs.InheritenceAndInterfaces);
-
+            
             var mapper = new DataTypeMapper();
             var newType = compileUnit.Namespaces[0].Types[0];
-
+            
             newType.IsPartial = appPrefs.GeneratePartialClasses;
 
             CreateProperties(codeGenerationHelper, mapper, newType);
@@ -414,22 +415,9 @@ namespace NMG.Core.Generator
         private void WriteToFile(CodeCompileUnit compileUnit, string className)
         {
             var provider = GetCodeDomProvider();
-            var sourceFile = GetCompleteFilePath(provider, className);
-            var streamWriter = new StringWriter();
-            using (provider)
-            {
-                var textWriter = new IndentedTextWriter(streamWriter, "    ");
-                using (textWriter)
-                {
-                    using (streamWriter)
-                    {
-                        var options = new CodeGeneratorOptions { BlankLinesBetweenMembers = false };
-                        provider.GenerateCodeFromCompileUnit(compileUnit, textWriter, options);
-                    }
-                }
-            }
-            var entireContent = CleanupGeneratedFile(streamWriter.ToString());
+            var entireContent = WriteToString(compileUnit, provider);
 
+            var sourceFile = GetCompleteFilePath(provider, className);
             using (var writer = new StreamWriter(sourceFile))
             {
                 writer.Write(entireContent);
@@ -553,10 +541,16 @@ namespace NMG.Core.Generator
             return builder.ToString();
         }
 
+        private static readonly Regex REMOVE_COMMENTS_REGEX = new Regex("//------------------------------------------------------------------------------\\r?\\n");
         private static string RemoveComments(string entireContent)
         {
-            int end = entireContent.LastIndexOf("----------", StringComparison.Ordinal);
-            entireContent = entireContent.Remove(0, end + 10);
+            var beginMatch = REMOVE_COMMENTS_REGEX.Match(entireContent);
+            var begin = beginMatch.Index;
+
+            var endMatch = REMOVE_COMMENTS_REGEX.Match(entireContent, begin + beginMatch.Length);
+            var end = endMatch.Index + endMatch.Length;
+
+            entireContent = entireContent.Remove(begin, count: end - begin);
             return entireContent;
         }
 

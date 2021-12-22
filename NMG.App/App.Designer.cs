@@ -98,6 +98,7 @@ namespace NHibernateMappingGenerator
             this.camelCasedTableRadioButton = new System.Windows.Forms.RadioButton();
             this.sameAsTableRadioButton = new System.Windows.Forms.RadioButton();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.testDisabledRadioButton = new System.Windows.Forms.RadioButton();
             this.nhibernatePersistenceTestingRadioButton = new System.Windows.Forms.RadioButton();
             this.fluentNHibernateRadioButton = new System.Windows.Forms.RadioButton();
             this.testAttributeTextBox = new System.Windows.Forms.TextBox();
@@ -152,7 +153,8 @@ namespace NHibernateMappingGenerator
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-            this.testDisabledRadioButton = new System.Windows.Forms.RadioButton();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.quietNullableWarningsCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dbTableDetailsGridView)).BeginInit();
             this.mainTabControl.SuspendLayout();
             this.basicSettingsTabPage.SuspendLayout();
@@ -184,6 +186,7 @@ namespace NHibernateMappingGenerator
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             this.SuspendLayout();
             // 
             // dbConnStrLabel
@@ -531,6 +534,7 @@ namespace NHibernateMappingGenerator
             this.mapCodeFastColoredTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.mapCodeFastColoredTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.mapCodeFastColoredTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mapCodeFastColoredTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.mapCodeFastColoredTextBox.IsReplaceMode = false;
             this.mapCodeFastColoredTextBox.Location = new System.Drawing.Point(3, 3);
             this.mapCodeFastColoredTextBox.Name = "mapCodeFastColoredTextBox";
@@ -557,6 +561,7 @@ namespace NHibernateMappingGenerator
             this.domainCodeFastColoredTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.domainCodeFastColoredTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.domainCodeFastColoredTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.domainCodeFastColoredTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.domainCodeFastColoredTextBox.IsReplaceMode = false;
             this.domainCodeFastColoredTextBox.Location = new System.Drawing.Point(3, 3);
             this.domainCodeFastColoredTextBox.Name = "domainCodeFastColoredTextBox";
@@ -583,6 +588,7 @@ namespace NHibernateMappingGenerator
             this.testCodeFastColoredTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.testCodeFastColoredTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.testCodeFastColoredTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.testCodeFastColoredTextBox.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.testCodeFastColoredTextBox.IsReplaceMode = false;
             this.testCodeFastColoredTextBox.Location = new System.Drawing.Point(3, 3);
             this.testCodeFastColoredTextBox.Name = "testCodeFastColoredTextBox";
@@ -744,6 +750,7 @@ namespace NHibernateMappingGenerator
             // 
             // advanceSettingsTabPage
             // 
+            this.advanceSettingsTabPage.Controls.Add(this.groupBox12);
             this.advanceSettingsTabPage.Controls.Add(this.groupBox11);
             this.advanceSettingsTabPage.Controls.Add(this.groupBox6);
             this.advanceSettingsTabPage.Controls.Add(this.groupBox10);
@@ -860,6 +867,17 @@ namespace NHibernateMappingGenerator
             this.groupBox6.TabIndex = 9;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Persistence Tests";
+            // 
+            // testDisabledRadioButton
+            // 
+            this.testDisabledRadioButton.AutoSize = true;
+            this.testDisabledRadioButton.Location = new System.Drawing.Point(6, 20);
+            this.testDisabledRadioButton.Name = "testDisabledRadioButton";
+            this.testDisabledRadioButton.Size = new System.Drawing.Size(66, 17);
+            this.testDisabledRadioButton.TabIndex = 4;
+            this.testDisabledRadioButton.TabStop = true;
+            this.testDisabledRadioButton.Text = "Disabled";
+            this.testDisabledRadioButton.UseVisualStyleBackColor = true;
             // 
             // nhibernatePersistenceTestingRadioButton
             // 
@@ -1436,16 +1454,25 @@ namespace NHibernateMappingGenerator
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.Size = new System.Drawing.Size(300, 16);
             // 
-            // testDisabledRadioButton
+            // groupBox12
             // 
-            this.testDisabledRadioButton.AutoSize = true;
-            this.testDisabledRadioButton.Location = new System.Drawing.Point(6, 20);
-            this.testDisabledRadioButton.Name = "testDisabledRadioButton";
-            this.testDisabledRadioButton.Size = new System.Drawing.Size(66, 17);
-            this.testDisabledRadioButton.TabIndex = 4;
-            this.testDisabledRadioButton.TabStop = true;
-            this.testDisabledRadioButton.Text = "Disabled";
-            this.testDisabledRadioButton.UseVisualStyleBackColor = true;
+            this.groupBox12.Controls.Add(this.quietNullableWarningsCheckBox);
+            this.groupBox12.Location = new System.Drawing.Point(842, 299);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(236, 50);
+            this.groupBox12.TabIndex = 24;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Nullable Context";
+            // 
+            // quietNullableWarningsCheckBox
+            // 
+            this.quietNullableWarningsCheckBox.AutoSize = true;
+            this.quietNullableWarningsCheckBox.Location = new System.Drawing.Point(7, 23);
+            this.quietNullableWarningsCheckBox.Name = "quietNullableWarningsCheckBox";
+            this.quietNullableWarningsCheckBox.Size = new System.Drawing.Size(229, 17);
+            this.quietNullableWarningsCheckBox.TabIndex = 0;
+            this.quietNullableWarningsCheckBox.Text = "Disable Warnings Before and Restore After";
+            this.quietNullableWarningsCheckBox.UseVisualStyleBackColor = true;
             // 
             // App
             // 
@@ -1503,6 +1530,8 @@ namespace NHibernateMappingGenerator
             this.groupBox1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1630,6 +1659,8 @@ namespace NHibernateMappingGenerator
         private RadioButton camelCasedTableRadioButton;
         private RadioButton sameAsTableRadioButton;
         private RadioButton testDisabledRadioButton;
+        private GroupBox groupBox12;
+        private CheckBox quietNullableWarningsCheckBox;
     }
 }
 

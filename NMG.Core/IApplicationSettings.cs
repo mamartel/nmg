@@ -42,5 +42,6 @@ namespace NMG.Core
         bool GenerateWcfDataContract { get; }
         bool GenerateColumnNameMapping { get; }
         bool BaseClassProvidesIdProperty { get; }
+        bool QuietNullableWarnings { get; }
     }
 }

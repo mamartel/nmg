@@ -66,8 +66,14 @@ namespace NMG.Core.Generator
                 {
                     using (streamWriter)
                     {
+                        if (applicationPreferences.QuietNullableWarnings)
+                            textWriter.WriteLine("#nullable disable warnings");
+
                         var options = new CodeGeneratorOptions { BlankLinesBetweenMembers = false };
                         provider.GenerateCodeFromCompileUnit(compileUnit, textWriter, options);
+
+                        if (applicationPreferences.QuietNullableWarnings)
+                            textWriter.WriteLine("#nullable restore warnings");
                     }
                 }
             }

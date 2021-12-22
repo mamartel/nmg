@@ -222,6 +222,8 @@ namespace NHibernateMappingGenerator
                 generateColumnNameMappingCheckBox.Checked = applicationSettings.GenerateColumnNameMapping;
                 baseClassProvidesIdPropertyCheckBox.Checked = applicationSettings.BaseClassProvidesIdProperty;
 
+                quietNullableWarningsCheckBox.Checked = applicationSettings.QuietNullableWarnings;
+
                 SetCodeControlFormatting(applicationSettings);
             }
             else
@@ -370,6 +372,7 @@ namespace NHibernateMappingGenerator
             applicationSettings.PersistenceTestingFramework = GetPersistenceTestingFramework();
             applicationSettings.GenerateColumnNameMapping = generateColumnNameMappingCheckBox.Checked;
             applicationSettings.BaseClassProvidesIdProperty = baseClassProvidesIdPropertyCheckBox.Checked;
+            applicationSettings.QuietNullableWarnings = quietNullableWarningsCheckBox.Checked;
         }
 
         private void BindData()
